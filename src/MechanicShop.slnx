@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="MechanicShop.Api/MechanicShop.Api.csproj" />
+  <Project Path="MechanicShop.Application/MechanicShop.Application.csproj" />
+  <Project Path="MechanicShop.Contracts/MechanicShop.Contracts.csproj" />
+  <Project Path="MechanicShop.Domain/MechanicShop.Domain.csproj" />
+  <Project Path="MechanicShop.Infrastructure/MechanicShop.Infrastructure.csproj" />
+</Solution>
