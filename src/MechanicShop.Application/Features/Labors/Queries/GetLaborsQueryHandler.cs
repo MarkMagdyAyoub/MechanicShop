@@ -1,12 +1,13 @@
 using MechanicShop.Application.Common.Interfaces;
-using MechanicShop.Application.Features.Labor.DTOs;
+using MechanicShop.Application.Features.Labors.DTOs;
 using MechanicShop.Domain.Common.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MechanicShop.Domain.Identity;
 using MechanicShop.Application.Features.Labor.Mappers;
-namespace MechanicShop.Application.Features.Labor.Queries;
+using MechanicShop.Application.Features.Labor.Queries;
+namespace MechanicShop.Application.Features.Labors.Queries;
 
 public class GetLaborsQueryHandler(
   IAppDbContext context,

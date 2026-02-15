@@ -1,4 +1,4 @@
-namespace MechanicShop.Application.Features.Labor.DTOs;
+namespace MechanicShop.Application.Features.Labors.DTOs;
 
 public class LaborDto
 {
