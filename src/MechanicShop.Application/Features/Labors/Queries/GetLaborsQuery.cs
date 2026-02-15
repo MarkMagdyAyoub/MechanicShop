@@ -1,5 +1,5 @@
 using MechanicShop.Application.Common.Interfaces;
-using MechanicShop.Application.Features.Labor.DTOs;
+using MechanicShop.Application.Features.Labors.DTOs;
 using MechanicShop.Domain.Common.Results;
 
 namespace MechanicShop.Application.Features.Labor.Queries;

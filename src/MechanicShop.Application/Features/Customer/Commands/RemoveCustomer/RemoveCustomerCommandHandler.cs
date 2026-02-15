@@ -27,7 +27,7 @@ public sealed class RemoveCustomerCommandHandler(
       return ApplicationErrors.CustomerNotFound;
     }
 
-    //! check if it has work orders or not
+    // TODO: check if the customer has work orders or not
 
     _context.Customers.Remove(customer);
 
