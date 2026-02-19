@@ -43,7 +43,7 @@ public static class WorkOrderErrors
 
     public static Error StateTransitionNotAllowed(DateTimeOffset startAtUtc) => Error.Conflict(
         code: "WorkOrder.StateTransition.NotAllowed",
-        description: $"State transition is not allowed before the work order’s scheduled start time {startAtUtc:yyyy-MM-dd HH:mm} UTC.");
+        description: $"State Transition Is Not Allowed Before The Work Order’s Scheduled Start Time `{startAtUtc:yyyy-MM-dd HH:mm}` UTC.");
 
     public static Error InvalidStateTransition(WorkOrderState current, WorkOrderState next) => Error.Conflict(
         code: "WorkOrder.InvalidStateTransition",

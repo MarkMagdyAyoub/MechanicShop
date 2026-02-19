@@ -18,5 +18,5 @@ public interface IAppDbContext
   public DbSet<Employee> Employees { get; }
   public DbSet<Invoice> Invoices { get; }
   public DbSet<RefreshToken> RefreshTokens { get; }
-  Task<int> SaveChangeAsync(CancellationToken cancellationToken);
+  Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

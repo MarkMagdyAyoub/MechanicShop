@@ -31,7 +31,7 @@ public sealed class RemoveCustomerCommandHandler(
 
     _context.Customers.Remove(customer);
 
-    await _context.SaveChangeAsync(cancellationToken);
+    await _context.SaveChangesAsync(cancellationToken);
 
     await _cache.RemoveByTagAsync("customer" , cancellationToken);
 

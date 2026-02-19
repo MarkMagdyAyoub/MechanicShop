@@ -1,9 +1,14 @@
 using MechanicShop.Domain.Common.Results;
+using MechanicShop.Domain.WorkOrders.Enums;
 
 namespace MechanicShop.Application.Common.Errors;
 
 public static class ApplicationErrors
 {
+  public static Error SpotAvailability(DateTimeOffset startAt , DateTimeOffset endAt) => Error.Conflict(
+    code: "ApplicationErrors.WorkOrder.SpotNotAvailable",
+    description: $"The Selected Spot Is Not Available From {startAt} To {endAt}"
+  ); 
   // the system is available between 6AM to 8PM
   // so you cannot assign WorkOrder outside these intervals
   public static Error WorkOrderOperatingHour(DateTimeOffset startAtUtc , DateTimeOffset endAtUtc) => 
@@ -15,6 +20,18 @@ public static class ApplicationErrors
     Error.NotFound(
       code: "ApplicationErrors.WorkOrder.NotFound",
       description: "WorkOrder Does Not Found."
+    );
+
+  public static Error WorkOrderCannotBeDeleted(WorkOrderState status) => 
+    Error.NotFound(
+      code: "ApplicationErrors.WorkOrder.CannotBeDeleted",
+      description: $"Deletion Failed: Only 'Scheduled' or 'Canceled' WorkOrders Can Be Deleted. Current Status: {status}"
+    );
+
+  public static Error RepairTaskMissing(List<Guid> missingIds) =>
+    Error.NotFound(
+      code: "ApplicationErrors.RepairTask.NotFound",
+      description: $"Repair Tasks With Ids `{string.Join(", " , missingIds)}` Not Found."
     );
   public static Error LaborOccupied => 
     Error.Conflict(
@@ -32,6 +49,12 @@ public static class ApplicationErrors
     Error.NotFound(
       code: "ApplicationErrors.Vehicle.NotFound",
       description: "Vehicle Does Not Exist."
+    );
+
+  public static Error VehicleAlreadyUnderMaintenance => 
+    Error.NotFound(
+      code: "ApplicationErrors.Vehicle.AlreadyUnderMaintenance",
+      description: "The Vehicle Already Under Maintenance."
     );
 
   public static Error VehicleSchedulingConflict =>
@@ -100,4 +123,5 @@ public static class ApplicationErrors
       code: "ApplicationErrors.Employee.LaborNotFound", 
       description: "Labor Does Not Exist."
     );
+
 }

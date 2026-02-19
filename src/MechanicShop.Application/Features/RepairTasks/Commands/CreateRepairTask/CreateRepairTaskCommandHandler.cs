@@ -60,7 +60,7 @@ public sealed class CreateRepairTaskCommandHandler(
     }
 
     await _context.RepairTasks.AddAsync(createRepairTaskResult.Value , cancellationToken);
-    await _context.SaveChangeAsync(cancellationToken);
+    await _context.SaveChangesAsync(cancellationToken);
     await _cache.RemoveByTagAsync("repair-task" , cancellationToken);
     
     _logger.LogInformation("Repair Task Added Successfully");

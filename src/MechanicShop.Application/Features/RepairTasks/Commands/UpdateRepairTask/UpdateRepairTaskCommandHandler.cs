@@ -57,7 +57,7 @@ public sealed class UpdateRepairTaskCommandHandler(
       return upsertPartsResult.Errors;
     }
 
-    await _context.SaveChangeAsync(cancellationToken);
+    await _context.SaveChangesAsync(cancellationToken);
     
     await _cache.RemoveByTagAsync("repair-task" , cancellationToken);
 
