@@ -33,7 +33,7 @@ public sealed class RemoveRepairTaskCommandHandler(
 
     _context.RepairTasks.Remove(exists);
     
-    await _context.SaveChangeAsync(cancellationToken);
+    await _context.SaveChangesAsync(cancellationToken);
     
     await _cache.RemoveByTagAsync("repair-task" , cancellationToken);
     

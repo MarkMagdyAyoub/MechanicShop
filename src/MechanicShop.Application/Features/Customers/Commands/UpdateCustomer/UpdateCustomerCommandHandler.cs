@@ -61,7 +61,7 @@ public sealed class UpdateCustomerCommandHandler(
       return upsertPartsResult.Errors;
     }
 
-    await _context.SaveChangeAsync(cancellationToken);
+    await _context.SaveChangesAsync(cancellationToken);
     
     await _cache.RemoveByTagAsync("customer" ,  cancellationToken);
     

@@ -76,7 +76,7 @@ public sealed class CreateCustomerCommandHandler (
 
     _context.Customers.Add(customer);
     
-    await _context.SaveChangeAsync(ct);
+    await _context.SaveChangesAsync(ct);
 
     _logger.LogInformation($"Customer Created Successfully. Id: {customer.Id}");
 

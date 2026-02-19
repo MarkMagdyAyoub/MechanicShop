@@ -24,7 +24,7 @@ public sealed class WorkOrder : AuditableEntity
   public decimal Discount { get; private set; }
   public decimal Tax { get; private set; }
   public decimal TotalLaborCost => _repairTasks.Sum(rt => rt.LaborCost);
-  public decimal TotalPartsCost => _repairTasks.SelectMany(rt => rt.Parts).Sum(p => p.Cost);
+  public decimal TotalPartsCost => _repairTasks.SelectMany(rt => rt.Parts).Sum(p => p.Cost * p.Quantity);
   public decimal Total => TotalPartsCost + TotalLaborCost;
   public bool IsEditable => State is not (WorkOrderState.Cancelled or WorkOrderState.InProgress or WorkOrderState.Completed);
 
@@ -132,7 +132,7 @@ public sealed class WorkOrder : AuditableEntity
     return Result.Updated;
   }
 
-  public bool CanTransitionTo(WorkOrderState newStatus)
+  private bool CanTransitionTo(WorkOrderState newStatus)
   {
       return (State, newStatus) switch
       {

@@ -8,6 +8,6 @@ public class RepairTaskDto
   public string Name { get; set; } = string.Empty;
   public decimal LaborCost { get; set; } 
   public decimal TotalCost { get; set; } 
-  public RepairDurationInMinutes EstimatedDurationInMinS { get; set; }
+  public RepairDurationInMinutes EstimatedDurationInMins { get; set; }
   public List<RepairTaskPartDto> Parts = [];
 }
