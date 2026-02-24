@@ -21,6 +21,12 @@ public static class ApplicationErrors
       code: "ApplicationErrors.WorkOrder.NotFound",
       description: "WorkOrder Does Not Found."
     );
+  
+  public static Error WorkOrderOverlapping => 
+    Error.NotFound(
+      code: "ApplicationErrors.WorkOrder.Overlapping",
+      description: "WorkOrder Is Already Overlapped With Another WorkOrder."
+    );
 
   public static Error WorkOrderCannotBeDeleted(WorkOrderState status) => 
     Error.NotFound(

@@ -1,11 +1,11 @@
 using MechanicShop.Application.Common.Errors;
 using MechanicShop.Application.Common.Interfaces;
 using MechanicShop.Application.Features.WorkOrders.DTOs;
-using MechanicShop.Application.Features.WorkOrders.EventHandlers;
 using MechanicShop.Application.Features.WorkOrders.Mappers;
 using MechanicShop.Domain.Common.Results;
 using MechanicShop.Domain.Identity;
 using MechanicShop.Domain.WorkOrders;
+using MechanicShop.Domain.WorkOrders.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
