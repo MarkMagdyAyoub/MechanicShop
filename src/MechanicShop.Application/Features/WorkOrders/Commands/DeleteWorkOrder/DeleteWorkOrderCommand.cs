@@ -1,8 +1,8 @@
 using MechanicShop.Application.Common.Errors;
 using MechanicShop.Application.Common.Interfaces;
-using MechanicShop.Application.Features.WorkOrders.EventHandlers;
 using MechanicShop.Domain.Common.Results;
 using MechanicShop.Domain.WorkOrders.Enums;
+using MechanicShop.Domain.WorkOrders.Events;
 using MediatR;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;
