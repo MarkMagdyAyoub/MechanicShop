@@ -1,4 +1,8 @@
-# MechanicShop Management System
+<h1>
+  <img src="./output.png" alt="Logo" width="100" height="100" style="vertical-align: middle;">
+  MechanicShop Management System
+  <img src="./output.png" alt="Logo" width="100" height="100" style="vertical-align: middle;">
+</h1>
 
 A comprehensive, full-stack web application designed to streamline the daily operations of a modern mechanic shop. This system provides tools for managing work orders, customers, billing, and scheduling, all through a clean and intuitive user interface.
 
