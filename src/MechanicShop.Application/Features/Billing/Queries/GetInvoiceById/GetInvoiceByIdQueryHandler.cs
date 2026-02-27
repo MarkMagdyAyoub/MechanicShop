@@ -19,7 +19,7 @@ public sealed class GetInvoiceByIdQueryHandler(
 
   public async Task<Result<InvoiceDto>> Handle(GetInvoiceByIdQuery request, CancellationToken cancellationToken)
   {
-    var invoice = await _context.Invoices
+    var invoice = await _context.Invoices.AsNoTracking()
                         .Include(i => i.LineItems)
                         .Include(i => i.WorkOrder!)
                           .ThenInclude(wo => wo.Vehicle!)

@@ -20,7 +20,9 @@ public sealed class GetInvoicePdfQueryHandler(
 
   public async Task<Result<InvoicePdfDto>> Handle(GetInvoicePdfQuery request, CancellationToken cancellationToken)
   {
-    var invoice = await _context.Invoices.Include(i => i.LineItems).FirstOrDefaultAsync(i => i.Id == request.InvoiceId , cancellationToken);
+    var invoice = await _context.Invoices.AsNoTracking()
+                        .Include(i => i.LineItems)
+                        .FirstOrDefaultAsync(i => i.Id == request.InvoiceId , cancellationToken);
 
     if(invoice is null)
     {
