@@ -21,7 +21,7 @@ public sealed class WorkOrder : AuditableEntity
   public Invoice? Invoice { get; set; }
   private readonly List<RepairTask> _repairTasks = [];
   public IEnumerable<RepairTask> RepairTasks => _repairTasks.AsReadOnly();
-  public decimal Discount { get; private set; }
+  public decimal? Discount { get; private set; }
   public decimal Tax { get; private set; }
   public decimal TotalLaborCost => _repairTasks.Sum(rt => rt.LaborCost);
   public decimal TotalPartsCost => _repairTasks.SelectMany(rt => rt.Parts).Sum(p => p.Cost * p.Quantity);

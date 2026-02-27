@@ -87,6 +87,12 @@ public static class ApplicationErrors
       description: "Invoice Does Not Exist."
     );
 
+  public static Error InvoicePdfCannotBeGenerated => 
+    Error.NotFound(
+      code: "ApplicationErrors.Invoice.CannotBeGenerated",
+      description: "An Error Occurred While Generating The Invoice PDF."
+    );
+
   public static Error InvalidRefreshToken =>
     Error.Validation(
       code: "ApplicationErrors.RefreshToken.Expiry.Invalid",
