@@ -7,4 +7,5 @@ public interface IIdentityService
 {
   Task<Result<UserDto>> AuthenticateUserAsync(string email , string password , CancellationToken cancellationToken);
   Task<Result<UserDto>> GetUserByIdAsync(Guid UserId);
+  Task<string?> GetUserNameAsync(Guid userId);
 }
