@@ -4,6 +4,8 @@ using MechanicShop.Domain.Common.Results;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using MechanicShop.Domain.Customers;
 
 namespace MechanicShop.Application.Features.Customers.Commands.RemoveCustomer;
 
@@ -27,7 +29,17 @@ public sealed class RemoveCustomerCommandHandler(
       return ApplicationErrors.CustomerNotFound;
     }
 
-    // TODO: check if the customer has work orders or not
+    var hasWorkOrders = await _context.WorkOrders
+                              .Include(wo => wo.Vehicle)
+                              .Where(wo => wo.Vehicle != null)
+                              .AnyAsync(wo => wo.Vehicle!.CustomerId == request.CustomerId , cancellationToken);
+
+    if (hasWorkOrders)
+    {
+      _logger.LogWarning("Customer With Id `{customerId}` Cannot Be Deleted Because They Have Associated Work Orders" , request.CustomerId);
+      
+      return CustomerErrors.CannotDeleteCustomerWithWorkOrders;
+    }
 
     _context.Customers.Remove(customer);
 

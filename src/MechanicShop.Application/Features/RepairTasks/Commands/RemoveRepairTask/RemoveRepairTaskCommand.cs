@@ -1,6 +1,7 @@
 using MechanicShop.Application.Common.Errors;
 using MechanicShop.Application.Common.Interfaces;
 using MechanicShop.Domain.Common.Results;
+using MechanicShop.Domain.RepairTasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
@@ -27,9 +28,16 @@ public sealed class RemoveRepairTaskCommandHandler(
       return ApplicationErrors.RepairTaskNotFound;
     }
 
-    // TODO: check if the repair task is not in any work order
-    //var exists = _context.WorkOrders.AsNoTracking().SelectMany(wo => wo.RepairTasks).AnyAsync(rt => rt.RepairTaskId , ct)
-    // if(exists) LogWarning $$ RepairTaskErrors.InUse
+    var isRepairTaskInAnyWorkOrder = await _context.WorkOrders
+                                          .AsNoTracking()
+                                          .SelectMany(wo => wo.RepairTasks)
+                                          .AnyAsync(rt => rt.Id == request.RepairTaskId , cancellationToken);
+    if (isRepairTaskInAnyWorkOrder)
+    {
+      _logger.LogWarning("Cannot Deleted Repair Task With Id `{repairTaskId}` Because It Is Included In A Work Order" , request.RepairTaskId);
+
+      return RepairTaskErrors.InUse;
+    }
 
     _context.RepairTasks.Remove(exists);
     
