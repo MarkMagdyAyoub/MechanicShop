@@ -10,7 +10,6 @@ public sealed class SendWorkOrderCompletedEmailEventHandler(
   IAppDbContext context,
   ILogger<SendWorkOrderCompletedEmailEventHandler> logger,
   INotificationService notificationService
-  
 ) : INotificationHandler<WorkOrderCompleted>
 {
   private readonly IAppDbContext _context = context;
