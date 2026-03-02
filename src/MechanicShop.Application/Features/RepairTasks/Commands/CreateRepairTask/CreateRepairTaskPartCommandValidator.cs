@@ -14,11 +14,11 @@ public sealed class CreateRepairTaskPartCommandValidator
             .WithMessage("Part Name Must Not Exceed 100 Characters.");
 
         RuleFor(x => x.Cost)
-            .InclusiveBetween(1, 10_000)
-            .WithMessage("Cost Must Be Between 1 And 10,000.");
+            .InclusiveBetween(1, 100_000)
+            .WithMessage("Cost Must Be Between 1 And 100,000.");
 
         RuleFor(x => x.Quantity)
-            .InclusiveBetween(1, 10)
-            .WithMessage("Quantity Must Be Between 1 And 10.");
+            .InclusiveBetween(1, 100)
+            .WithMessage("Quantity Must Be Between 1 And 100.");
     }
 }

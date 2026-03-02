@@ -26,7 +26,7 @@ public sealed class Part : AuditableEntity
       if (string.IsNullOrWhiteSpace(name))
           return PartErrors.NameRequired;
 
-      if (cost <= 0 || cost > 10000)
+      if (cost <= 0 || cost > 100001)
           return PartErrors.CostInvalid;
 
       if (quantity <= 0 || quantity > 20)

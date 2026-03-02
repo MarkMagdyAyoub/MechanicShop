@@ -25,7 +25,6 @@ public sealed class CreateRepairTaskCommandHandler(
   public async Task<Result<RepairTaskDto>> Handle(CreateRepairTaskCommand request, CancellationToken cancellationToken)
   {
     
-    // TODO: Don't Forget To Make Name CITEXT For Case-Insensitive
     var nameExists = await _context.RepairTasks.AnyAsync(rt => rt.Name == request.Name); 
 
     if (nameExists)
