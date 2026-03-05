@@ -33,15 +33,14 @@ public sealed class RefreshTokenCommandHandler(
     }
 
     var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-    if(userId is null)
+    
+    if (!Guid.TryParse(userId, out var userIdGuid))
     {
-      _logger.LogWarning("Invalid UserId Claim");
-      
-      return ApplicationErrors.UserIdClaimInvalid;
+        _logger.LogWarning("Invalid UserId Claim");
+        return ApplicationErrors.UserIdClaimInvalid;
     }
 
-    var getUserResult = await _identityService.GetUserByIdAsync(Guid.Parse(userId));
+    var getUserResult = await _identityService.GetUserByIdAsync(userIdGuid);
 
     if (getUserResult.IsError)
     {
@@ -51,7 +50,7 @@ public sealed class RefreshTokenCommandHandler(
     }
 
     var refreshToken = await _context.RefreshTokens
-                              .FirstOrDefaultAsync(rt => rt.Token == request.RefreshToken && rt.UserId == userId , cancellationToken);
+                              .FirstOrDefaultAsync(rt => rt.Token == request.RefreshToken && rt.UserId == userIdGuid , cancellationToken);
 
     if(refreshToken is null || refreshToken.ExpiresOnUtc < DateTime.UtcNow)
     {

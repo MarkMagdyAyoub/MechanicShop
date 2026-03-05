@@ -6,10 +6,10 @@ namespace MechanicShop.Domain.Identity;
 public sealed class RefreshToken : AuditableEntity
 {
   public string? Token { get; }
-  public string? UserId { get; }
+  public Guid? UserId { get; }
   public DateTimeOffset ExpiresOnUtc { get; }
   private RefreshToken(){}
-  private RefreshToken(Guid id , string token , string userId , DateTimeOffset expiresOnUtc)
+  private RefreshToken(Guid id , string token , Guid userId , DateTimeOffset expiresOnUtc)
     : base(id)
   {
       Token = token;
@@ -17,7 +17,7 @@ public sealed class RefreshToken : AuditableEntity
       ExpiresOnUtc = expiresOnUtc;
   }
 
-  public Result<RefreshToken> Create(Guid id , string token , string userId , DateTimeOffset expiresOnUtc)
+  public static Result<RefreshToken> Create(Guid id , string token , Guid userId , DateTimeOffset expiresOnUtc)
   {
     if (id == Guid.Empty)
         return RefreshTokenErrors.IdRequired;
@@ -25,7 +25,7 @@ public sealed class RefreshToken : AuditableEntity
     if (string.IsNullOrWhiteSpace(token))
         return RefreshTokenErrors.TokenRequired;
 
-    if (string.IsNullOrWhiteSpace(userId))
+    if (!userId.Equals(Guid.Empty))
         return RefreshTokenErrors.UserIdRequired;
 
     if (expiresOnUtc <= DateTimeOffset.UtcNow)
