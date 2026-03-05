@@ -8,12 +8,17 @@ using MechanicShop.Domain.RepairTasks;
 using MechanicShop.Domain.RepairTasks.Parts;
 using MechanicShop.Domain.WorkOrders;
 using MechanicShop.Domain.WorkOrders.Billing;
+using MechanicShop.Infrastructure.Identity;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace MechanicShop.Infrastructure.Data;
 
-
-public sealed class AppDbContext(IMediator mediator) : DbContext ,IAppDbContext 
+public sealed class AppDbContext(
+  DbContextOptions<AppDbContext> options,
+  IMediator mediator
+) : IdentityDbContext<ApplicationUser , IdentityRole<Guid> , Guid>(options) ,IAppDbContext 
 {
   private readonly IMediator _mediator = mediator;
 
