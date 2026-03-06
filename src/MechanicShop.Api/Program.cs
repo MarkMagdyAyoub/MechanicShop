@@ -1,11 +1,9 @@
 using MechanicShop.Application;
-using MechanicShop.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-  .AddApplication()
-  .AddInfrastructure(builder.Configuration);
+  .AddApplication();
 
 var app = builder.Build();
 

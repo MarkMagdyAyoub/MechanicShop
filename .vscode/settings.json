@@ -4,7 +4,9 @@
     "CITEXT",
     "edfrom",
     "edto",
+    "Hmac",
     "Mediat",
+    "Npgsql",
     "sdfrom",
     "sdto"
   ]
