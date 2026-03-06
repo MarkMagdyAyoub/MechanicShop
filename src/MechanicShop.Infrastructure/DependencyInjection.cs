@@ -15,6 +15,7 @@ using Microsoft.Extensions.Caching.Hybrid;
 using MechanicShop.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authorization;
 using MechanicShop.Infrastructure.Services;
+using MechanicShop.Infrastructure.BackgroundJobs;
 
 namespace MechanicShop.Infrastructure;
 
@@ -123,6 +124,8 @@ public static class DependencyInjectionExtension
     services.AddScoped<IIdentityService , IdentityService>();
 
     services.AddScoped<IWorkOrderPolicy , WorkOrderPoliciesService>();
+
+    services.AddHostedService<OverdueWorkOrderBackgroundService>();
 
     return services;
   }

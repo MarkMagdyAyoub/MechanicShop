@@ -7,4 +7,6 @@ public sealed class ApplicationSettings
   public int DistributedCacheExpiration { get; init; }
   public int LocalCacheExpiration { get; init; }
   public int MinimumAppointmentDurationInMinutes { get; init; }
+  public int OverdueBookingCleanupFrequencyMinutes { get; init; }
+  public int BookingCancellationThresholdMinutes { get; init; }
 } 
