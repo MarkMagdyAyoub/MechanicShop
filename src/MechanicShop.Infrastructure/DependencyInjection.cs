@@ -24,6 +24,8 @@ public static class DependencyInjectionExtension
   public static IServiceCollection AddInfrastructure(this IServiceCollection services , IConfiguration configuration)
   {
     services.AddSingleton(TimeProvider.System);
+
+    services.AddSignalR();
     
     var settings = configuration
         .GetRequiredSection("AppSettings")
@@ -41,6 +43,10 @@ public static class DependencyInjectionExtension
 
     services.Configure<ApplicationSettings>(configuration.GetSection("AppSettings"));
     
+    services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+
+    services.Configure<SmsSettings>(configuration.GetSection("SmsSettings"));
+
     services.AddScoped<ISaveChangesInterceptor , UpdatedEntitiesInterceptor>();
 
     services.AddDbContext<AppDbContext>((serviceCollection , options) =>
@@ -126,6 +132,8 @@ public static class DependencyInjectionExtension
     services.AddScoped<IWorkOrderPolicy , WorkOrderPoliciesService>();
 
     services.AddHostedService<OverdueWorkOrderBackgroundService>();
+
+    services.AddScoped<INotificationService , NotificationService>();
 
     return services;
   }
