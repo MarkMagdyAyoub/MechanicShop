@@ -143,13 +143,13 @@ public sealed class CreateWorkOrderCommandHandler(
     workOrder.Vehicle = vehicle;
     workOrder.Labor = labor;
 
-    await _context.SaveChangesAsync(cancellationToken);
-
-    await _cache.RemoveByTagAsync("work-order" , cancellationToken);
+    workOrder.AddDomainEvent(new WorkOrderCollectionModified());
 
     _logger.LogInformation("WorkOrder With Id `{WorkOrderId}` Is Created Successfully" , workOrder.Id);
 
-    workOrder.AddDomainEvent(new WorkOrderCollectionModified());
+    await _context.SaveChangesAsync(cancellationToken);
+
+    await _cache.RemoveByTagAsync("work-order" , cancellationToken);
 
     return workOrder.ToDto();
   }

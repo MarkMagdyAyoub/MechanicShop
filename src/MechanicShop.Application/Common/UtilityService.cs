@@ -12,4 +12,6 @@ public static class UtilityService
 
     return $"{email[0]}******{email[atIndex - 1]}{email[atIndex..]}";
   }
+
+  public static string MaskPhoneNumber(string phoneNumber) => $"{phoneNumber[0..3]}*****{phoneNumber[8..]}";
 }

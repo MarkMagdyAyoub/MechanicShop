@@ -3,6 +3,9 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# appsettings.json
+./src/MechanicShop.Api/appsettings.json
+
 # dotenv files
 .env
 

@@ -2,14 +2,15 @@ using MechanicShop.Application.Common.Interfaces;
 using MechanicShop.Domain.Common.Results;
 using MechanicShop.Infrastructure.Common.Errors;
 using MechanicShop.Infrastructure.Settings;
+using Microsoft.Extensions.Options;
 
 namespace MechanicShop.Infrastructure.Services;
 
 public sealed class WorkOrderPoliciesService(
-  ApplicationSettings applicationSettings
+  IOptions<ApplicationSettings> applicationSettings
 ) : IWorkOrderPolicy
 {
-  private readonly ApplicationSettings _applicationSettings = applicationSettings;
+  private readonly ApplicationSettings _applicationSettings = applicationSettings.Value;
 
   public bool IsOutSideWorkingHours(DateTimeOffset startAt, TimeSpan duration)
   {
