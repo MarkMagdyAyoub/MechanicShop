@@ -16,6 +16,7 @@ using MechanicShop.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authorization;
 using MechanicShop.Infrastructure.Services;
 using MechanicShop.Infrastructure.BackgroundJobs;
+using MechanicShop.Infrastructure.RealTime;
 
 namespace MechanicShop.Infrastructure;
 
@@ -26,9 +27,13 @@ public static class DependencyInjectionExtension
     services.AddSingleton(TimeProvider.System);
 
     services.AddSignalR();
+
+    services.AddHttpContextAccessor();
+
+    QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
     
     var settings = configuration
-        .GetRequiredSection("AppSettings")
+        .GetRequiredSection("ApplicationSettings")
         .Get<ApplicationSettings>()!;
 
     var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -41,7 +46,7 @@ public static class DependencyInjectionExtension
 
     ArgumentNullException.ThrowIfNull(settings);
 
-    services.Configure<ApplicationSettings>(configuration.GetSection("AppSettings"));
+    services.Configure<ApplicationSettings>(configuration.GetSection("ApplicationSettings"));
     
     services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
@@ -131,9 +136,13 @@ public static class DependencyInjectionExtension
 
     services.AddScoped<IWorkOrderPolicy , WorkOrderPoliciesService>();
 
-    services.AddHostedService<OverdueWorkOrderBackgroundService>();
+    services.AddScoped<IPdfGenerator , PdfGenerator>();
 
     services.AddScoped<INotificationService , NotificationService>();
+
+    services.AddScoped<IWorkOrderNotifier , WorkOrderNotifierSignalR>();
+
+    services.AddHostedService<OverdueWorkOrderBackgroundService>();
 
     return services;
   }

@@ -1,4 +1,5 @@
 using MechanicShop.Application.Common.Interfaces;
+using MechanicShop.Application.Common.Models;
 using MechanicShop.Domain.WorkOrders.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,23 @@ public sealed class SendWorkOrderCompletedEmailEventHandler(
       return;
     }
 
-    await _notificationService.SendEmailAsync(workOrder.Vehicle?.Customer?.Email! , cancellationToken);
-    await _notificationService.SendSmsAsync(workOrder.Vehicle?.Customer?.PhoneNumber! , cancellationToken);
+    await _notificationService.SendEmailAsync(
+      new UserEmailInfo
+      {
+        UserName = workOrder.Vehicle?.Customer?.Name!,
+        Email = workOrder.Vehicle?.Customer?.Email!,
+      }, 
+      cancellationToken
+    );
+
+    await _notificationService.SendSmsAsync(
+      new UserSmsInfo
+      {
+        UserName = workOrder.Vehicle?.Customer?.Name!,
+        PhoneNumber = workOrder.Vehicle?.Customer?.PhoneNumber!
+      },
+      cancellationToken
+    );
+    
   }
 }

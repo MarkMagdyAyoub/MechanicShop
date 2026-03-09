@@ -11,11 +11,11 @@ namespace MechanicShop.Application.Features.RepairTasks.Queries.GetRepairTaskByI
 
 public sealed class GetRepairTaskByIdQueryHandler(
   IAppDbContext context,
-  Logger<GetRepairTaskByIdQueryHandler> logger
+  ILogger<GetRepairTaskByIdQueryHandler> logger
 ) : IRequestHandler<GetRepairTaskByIdQuery, Result<RepairTaskDto>>
 {
   private readonly IAppDbContext _context = context;
-  private readonly Logger<GetRepairTaskByIdQueryHandler> _logger = logger;
+  private readonly ILogger<GetRepairTaskByIdQueryHandler> _logger = logger;
 
   public async Task<Result<RepairTaskDto>> Handle(GetRepairTaskByIdQuery request, CancellationToken cancellationToken)
   { 
