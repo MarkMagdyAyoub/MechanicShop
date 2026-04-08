@@ -9,4 +9,6 @@ public sealed class ApplicationSettings
   public int MinimumAppointmentDurationInMinutes { get; init; }
   public int OverdueBookingCleanupFrequencyMinutes { get; init; }
   public int BookingCancellationThresholdMinutes { get; init; }
+  public string AllowedOrigin { get; set; } = null!;
+  public string CorsPolicyName { get; set; } = null!;
 } 

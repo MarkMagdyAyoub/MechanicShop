@@ -95,8 +95,8 @@ public sealed class NotificationService(
         TwilioClient.Init(_smsSettings.AccountSid, _smsSettings.AuthToken);
 
         var message = await MessageResource.CreateAsync(
-            to: new PhoneNumber(userInfo.PhoneNumber),
             from: new PhoneNumber(_smsSettings.FromNumber),
+            to: new PhoneNumber(userInfo.PhoneNumber),
             body: $"Dear {userInfo.UserName}, your vehicle service is complete. You may collect it from the shop at your earliest convenience."
         );
 

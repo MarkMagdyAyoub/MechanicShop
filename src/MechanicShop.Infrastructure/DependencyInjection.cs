@@ -26,10 +26,6 @@ public static class DependencyInjectionExtension
   {
     services.AddSingleton(TimeProvider.System);
 
-    services.AddSignalR();
-
-    services.AddHttpContextAccessor();
-
     QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
     
     var settings = configuration
@@ -46,19 +42,13 @@ public static class DependencyInjectionExtension
 
     ArgumentNullException.ThrowIfNull(settings);
 
-    services.Configure<ApplicationSettings>(configuration.GetSection("ApplicationSettings"));
-    
-    services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
-
-    services.Configure<SmsSettings>(configuration.GetSection("SmsSettings"));
-
     services.AddScoped<ISaveChangesInterceptor , UpdatedEntitiesInterceptor>();
 
     services.AddDbContext<AppDbContext>((serviceCollection , options) =>
     {
       options.AddInterceptors(serviceCollection.GetServices<ISaveChangesInterceptor>());
       options.UseNpgsql(connectionString);
-    });
+    }).AddHealthChecks();
 
     services.AddScoped<IAppDbContext>(serviceCollection => serviceCollection.GetRequiredService<AppDbContext>());
 

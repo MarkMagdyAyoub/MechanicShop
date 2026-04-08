@@ -1,17 +1,21 @@
-using MechanicShop.Api.Services;
+using MechanicShop.Api;
 using MechanicShop.Application;
-using MechanicShop.Application.Common.Interfaces;
 using MechanicShop.Infrastructure;
-using MechanicShop.Infrastructure.RealTime;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
   .AddApplication()
-  .AddInfrastructure(builder.Configuration);
+  .AddInfrastructure(builder.Configuration)
+  .AddPresentation(builder.Configuration , builder.Host , builder.Environment);
 
 var app = builder.Build();
 
-app.MapHub<WorkOrderHub>(WorkOrderHub.HUB_URL);
+if (app.Environment.IsDevelopment())
+  app.AddDevelopmentDependencies();
+
+app.UseApplicationMiddlewares();
+
+app.MapEndpoints();
 
 app.Run();

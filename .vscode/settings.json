@@ -1,14 +1,22 @@
 {
   "cSpell.words": [
+    "ASPNETCORE",
     "Browsable",
+    "buildtransitive",
     "CITEXT",
+    "contentfiles",
     "edfrom",
     "edto",
+    "FIRSTRUN",
     "Hmac",
     "Mediat",
+    "NOAUTHENTICATION",
     "Npgsql",
     "sdfrom",
     "sdto",
+    "Serilog",
+    "supabase",
+    "Swashbuckle",
     "wordmark"
   ]
 }

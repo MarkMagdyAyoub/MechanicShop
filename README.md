@@ -13,8 +13,8 @@ This project is currently in active development.
 *   **Completed Layers:**
     *   `Domain`: The core business logic, entities, and rules are defined.
     *   `Application`: The use cases (features), command/query logic, and application-level services are implemented.
-*   **In-Progress Layers:**
     *   `Infrastructure`: Database integration, external services, and other technical implementations are being built.
+*   **In-Progress Layers:**
     *   `Api`: The RESTful API endpoints are being developed.
     *   `Client`: The Angular frontend application is under construction.
 
