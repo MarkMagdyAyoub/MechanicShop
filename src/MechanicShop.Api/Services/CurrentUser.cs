@@ -7,5 +7,18 @@ public sealed class CurrentUser(IHttpContextAccessor httpContextAccessor) : IUse
 {
   private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
-  public Guid? Id => Guid.Parse(_httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+  public Guid? Id
+  {
+    get
+    {
+      var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+      if(Guid.TryParse(userId , out var parsedValue))
+      {
+        return parsedValue;
+      }
+
+      return null;
+    }
+  }
 }

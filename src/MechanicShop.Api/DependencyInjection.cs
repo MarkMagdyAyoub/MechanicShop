@@ -61,6 +61,8 @@ public static class DependencyInjection
       .AddOutputCaching()
       .AddCorsConfiguration(configuration)
       .AddSignalR();
+
+    services.AddControllers();
       
     return services;
   }
@@ -288,8 +290,10 @@ public static class DependencyInjection
 
   public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder app)
   {
+    app.MapControllers();
+    
     app.MapHub<WorkOrderHub>(WorkOrderHub.HUB_URL);
-
+    
     return app;
   }
 }
