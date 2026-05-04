@@ -64,8 +64,8 @@ public static class DependencyInjectionExtension
       options =>
       {
         var jwtSettings = configuration.GetSection("JwtSettings");
-        
-        var key = jwtSettings["Key"] 
+
+        var key = jwtSettings["Secret"] 
                   ?? throw new InvalidOperationException("JWT Key is missing");
 
         options.TokenValidationParameters = new TokenValidationParameters

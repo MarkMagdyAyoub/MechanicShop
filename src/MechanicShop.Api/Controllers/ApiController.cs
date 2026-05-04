@@ -4,11 +4,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace MechanicShop.Api.Controllers;
 
-
-
-// please review the following concepts
-// controllers
-// Problem Details
 [ApiController]
 public class ApiController : ControllerBase
 {

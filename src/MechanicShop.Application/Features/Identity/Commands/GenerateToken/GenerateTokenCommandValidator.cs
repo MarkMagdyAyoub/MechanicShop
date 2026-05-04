@@ -7,10 +7,9 @@ public sealed class GenerateTokenCommandValidator : AbstractValidator<GenerateTo
   public GenerateTokenCommandValidator()
   {
     RuleFor(request => request.Email)
-      .NotNull()
-      .NotEmpty()
-      .WithErrorCode("Email_Null_Or_Empty")
-      .WithMessage("Email Cannot Be Null Or Empty");
+        .NotNull().WithMessage("Email is required")
+        .NotEmpty().WithMessage("Email cannot be empty")
+        .EmailAddress().WithMessage("Invalid email format");
 
     RuleFor(request => request.Password)
       .NotNull().NotEmpty()

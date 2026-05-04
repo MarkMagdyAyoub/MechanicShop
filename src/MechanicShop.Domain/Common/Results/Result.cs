@@ -70,7 +70,6 @@ public sealed class Result<TValue> : IResult<TValue>
       IsSuccess = false;
     }
   }
-
   public TNextValue Match<TNextValue>(Func<TValue , TNextValue> onValue , Func<List<Error> , TNextValue> onError)
     => IsSuccess ? onValue(Value!) : onError(Errors);
 

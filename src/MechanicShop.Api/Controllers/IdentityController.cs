@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MechanicShop.Api.Controllers;
 
 
-[Route("identity")]
+[Route("api/identity")]
 [ApiVersionNeutral]
 public sealed class IdentityController(ISender sender) : ApiController
 {
