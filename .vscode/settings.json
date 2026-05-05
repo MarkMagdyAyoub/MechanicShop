@@ -17,6 +17,7 @@
     "Serilog",
     "supabase",
     "Swashbuckle",
-    "wordmark"
+    "wordmark",
+    "workorders"
   ]
 }
