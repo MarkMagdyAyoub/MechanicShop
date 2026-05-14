@@ -86,6 +86,8 @@ public static class DependencyInjectionExtension
 
     services.AddScoped<IAuthorizationHandler, OwnWorkOrderAccessRequirementHandler>();
 
+    services.AddScoped<DbContextInitializer>();
+
     services.AddAuthorization(
       options =>
       {

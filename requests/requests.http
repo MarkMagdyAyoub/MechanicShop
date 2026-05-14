@@ -1,0 +1,57 @@
+@baseUrl = https://localhost:7007
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI4ZDdmMmY0NC04YzkxLTRmN2YtYTVmMi0xZDljM2I4YTRlMTEiLCJlbWFpbCI6Im1hcmtAZ21haWwuY29tIiwicm9sZSI6Ik1hbmFnZXIiLCJuYmYiOjE3Nzg2NTM5MjUsImV4cCI6MTc3ODY1NzUyNSwiaWF0IjoxNzc4NjUzOTI1LCJpc3MiOiJsb2NhbGhvc3QiLCJhdWQiOiJsb2NhbGhvc3QifQ.nUvzg0UX80sb1mswpNJkCCHMzjAxQI-gKhZRaXOhcMs
+
+@refreshToken = fejTRXQQZ9HP2L0Pc/iCpFqXmo1UFhjdgonrEw74x/Q=
+
+### Login As Manager
+POST {{baseUrl}}/api/identity/token/generate
+Content-Type: application/json
+api-version: 1.0
+
+{
+  "email": "mark@gmail.com",
+  "password": "Manager@1234!"
+}
+
+### Login As Labor
+POST {{baseUrl}}/api/identity/token/generate
+Content-Type: application/json
+api-version: 1.0
+
+{
+  "email": "alice@gmail.com",
+  "password": "Labor@1234!"
+}
+
+### Refresh token 
+POST {{baseUrl}}/api/identity/token/refresh-token
+api-version: 1.0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}",
+  "expiredAccessToken": "{{token}}"
+}
+
+### View Dashboard Stats
+GET {{baseUrl}}/api/dashboard/stats
+Authorization: Bearer {{token}}
+
+### Get All Customers
+GET {{baseUrl}}/api/customers
+Authorization: Bearer {{token}}
+
+### Get Customer By Id
+GET {{baseUrl}}/api/customers/6c2e4a6d-7a2c-8c5e-d3df-6e7a4b2f6006
+Authorization: Bearer {{token}}
+
+### Get All Repair Tasks
+GET {{baseUrl}}/api/repair-tasks
+api-version: 1.0
+Authorization: Bearer {{token}}
+
+### Get Repair Tasks By Id
+GET {{baseUrl}}/api/repair-tasks/1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d
+api-version: 1.0
+Authorization: Bearer {{token}}

@@ -9,5 +9,5 @@ public class RepairTaskDto
   public decimal LaborCost { get; set; } 
   public decimal TotalCost { get; set; } 
   public RepairDurationInMinutes EstimatedDurationInMins { get; set; }
-  public List<RepairTaskPartDto> Parts = [];
+  public List<RepairTaskPartDto> Parts { get; set; } = [];
 }

@@ -23,21 +23,45 @@ public class CachingBehavior<TRequest, TResponse>(
 
     var result = await _cache.GetOrCreateAsync(
       key: cacheRequest.CacheKey,
-      factory: async ct =>
-      {
-        var innerResult = await next(ct);
-        if(innerResult is IResult r && r.IsSuccess)
-          return innerResult;
-        
-        return default!;
-      },
+      // Factory required by GetOrCreateAsync.
+      // Value is a dummy placeholder because DisableUnderlyingData prevents its use.
+      // Cache miss is handled manually after this call.
+      factory: _ => new ValueTask<TResponse>((TResponse)(object)null!),
       options: new HybridCacheEntryOptions
       {
-        Expiration = cacheRequest.Expiration
+        // On cache miss, use the factory only.
+      // Disables any internal fallback or underlying data resolution mechanisms.
+      Flags = HybridCacheEntryFlags.DisableUnderlyingData
       },
-      tags: cacheRequest.Tags,
       cancellationToken: cancellationToken
     );
+
+    if(result is not null)
+      _logger.LogInformation("Cache Hit For `{TRequest}`" , typeof(TRequest));
+    else 
+      _logger.LogInformation("CACHE MISS for {Request}", typeof(TRequest).Name);
+
+    // at this point , we know that the cache is miss (result is null)
+    if(result is null)
+    {
+      // execute the handler , and if it success then cache the result
+      result = await next(cancellationToken);
+
+      if(result is IResult { IsSuccess: true })
+      {
+        await _cache.SetAsync(
+          key: cacheRequest.CacheKey,
+          value: result,
+          options: 
+            new HybridCacheEntryOptions
+            {
+              Expiration = cacheRequest.Expiration
+            },
+          tags: cacheRequest.Tags,
+          cancellationToken: cancellationToken
+        );
+      }
+    }
 
     return result;
   }

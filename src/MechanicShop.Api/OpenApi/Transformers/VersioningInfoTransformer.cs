@@ -14,6 +14,11 @@ public sealed class VersioningInfoTransformer : IOpenApiDocumentTransformer
 
     document.Info.Version = version;
     document.Info.Title = $"MechanicShop {version}";
+    document.Info.Description = $"Backend Api For Managing Streamline The Daily Operations Of A Modern Mechanic Shop.";
+    document.Info.Contact = new OpenApiContact
+    {
+      Email = "markgeforce4080@gmail.com"
+    };
 
     return Task.CompletedTask;
   }

@@ -25,7 +25,7 @@ public sealed class RefreshToken : AuditableEntity
     if (string.IsNullOrWhiteSpace(token))
         return RefreshTokenErrors.TokenRequired;
 
-    if (!userId.Equals(Guid.Empty))
+    if (userId.Equals(Guid.Empty))
         return RefreshTokenErrors.UserIdRequired;
 
     if (expiresOnUtc <= DateTimeOffset.UtcNow)

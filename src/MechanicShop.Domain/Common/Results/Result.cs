@@ -52,9 +52,9 @@ public sealed class Result<TValue> : IResult<TValue>
   [JsonConstructor]
   [EditorBrowsable(EditorBrowsableState.Never)]
   [Obsolete("For Serializer Only" , true)]
-  public Result(TValue? value , List<Error>? errors , bool isSuccess)
+  public Result(TValue? value, List<Error>? errors, bool isSuccess)
   {
-    if (IsSuccess)
+    if (isSuccess)
     {
       _value = value ?? throw new ArgumentNullException(nameof(value));
       _errors = [];
@@ -62,10 +62,11 @@ public sealed class Result<TValue> : IResult<TValue>
     }
     else
     {
-      if(errors is null || errors.Count == 0)
-        throw new ArgumentException("Provide At Least One Error" , nameof(errors));
-      
-      _errors = errors;
+      if (errors is null || errors.Count == 0)
+        _errors = [];
+      else
+        _errors = errors;
+
       _value = default;
       IsSuccess = false;
     }

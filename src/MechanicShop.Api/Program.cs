@@ -12,7 +12,7 @@ builder.Services
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
-  app.AddDevelopmentDependencies();
+  await app.AddDevelopmentDependencies();
 
 app.UseApplicationMiddlewares();
 

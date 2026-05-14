@@ -2,6 +2,7 @@ using MechanicShop.Api.Exceptions;
 using MechanicShop.Api.OpenApi.Transformers;
 using MechanicShop.Api.Services;
 using MechanicShop.Application.Common.Interfaces;
+using MechanicShop.Infrastructure.Data;
 using MechanicShop.Infrastructure.RealTime;
 using MechanicShop.Infrastructure.Settings;
 using Microsoft.AspNetCore.Mvc;
@@ -67,10 +68,16 @@ public static class DependencyInjection
     return services;
   }
 
-  public static WebApplication AddDevelopmentDependencies(this WebApplication app)
+  public static async Task<WebApplication> AddDevelopmentDependencies(this WebApplication app)
   {
     app.MapOpenApi();
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+      options.SwaggerEndpoint("/openapi/v1.json" , "v1");
+    });
+    await app.InitializeDatabaseAsync();
     return app;
   }
 
@@ -138,7 +145,7 @@ public static class DependencyInjection
         options.AddOperationTransformer<BearerSecuritySchemePerOperationTransformer>();
       });
     }
-
+    services.AddSwaggerGen();
     return services;
   }
 

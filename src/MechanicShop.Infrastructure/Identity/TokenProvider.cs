@@ -53,7 +53,7 @@ public sealed class TokenProvider(
       ValidateLifetime = false,
       ValidIssuer = jwtSettings["Issuer"],
       ValidAudience = jwtSettings["Audience"],
-      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!)),
+      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"]!)),
       ClockSkew = TimeSpan.Zero
     };
     
@@ -78,7 +78,7 @@ public sealed class TokenProvider(
     var jwtSettings = _configuration.GetSection("JwtSettings");
     var issuer = jwtSettings["Issuer"];
     var audience = jwtSettings["Audience"];
-    var key = jwtSettings["Key"];
+    var key = jwtSettings["Secret"];
     var expiration =  DateTime.UtcNow.AddMinutes(int.Parse(jwtSettings["TokenExpirationInMinutes"]!));
     var refreshTokenExpiration = DateTime.UtcNow.AddDays(int.Parse(jwtSettings["RefreshTokenExpirationInDays"]!));
 

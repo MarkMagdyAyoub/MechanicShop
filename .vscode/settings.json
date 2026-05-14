@@ -9,6 +9,7 @@
     "edto",
     "FIRSTRUN",
     "Hmac",
+    "Magdy",
     "Mediat",
     "NOAUTHENTICATION",
     "Npgsql",
@@ -17,6 +18,7 @@
     "Serilog",
     "supabase",
     "Swashbuckle",
+    "Validatable",
     "wordmark",
     "workorders"
   ]

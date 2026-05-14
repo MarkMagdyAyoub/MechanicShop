@@ -4,10 +4,10 @@ using MediatR;
 namespace MechanicShop.Application.Common.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse>(
-  IValidator<TRequest> validator
+  IValidator<TRequest>? validator = null
 ) : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull where TResponse : IResult
 {
-  private readonly IValidator<TRequest> _validator = validator;
+  private readonly IValidator<TRequest>? _validator = validator;
 
   public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
   {

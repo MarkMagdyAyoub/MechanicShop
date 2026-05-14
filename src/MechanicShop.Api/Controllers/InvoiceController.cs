@@ -21,7 +21,7 @@ public sealed class InvoiceController(ISender sender) : ApiController
   [ProducesResponseType(typeof(ProblemDetails) , StatusCodes.Status500InternalServerError)]
   [EndpointName("IssueInvoice")]
   [EndpointSummary("Issue An Invoice For A Work Order")]
-  [EndpointDescription("Creates A New Invoice For Specified Work Order")]
+  [EndpointDescription("Creates A New Invoice For Specified Work Order , Only Managers Role Are Authorized.")]
   [Tags("invoices")]
   public async Task<IActionResult> IssueInvoice(Guid workOrderId , CancellationToken ct)
   {
