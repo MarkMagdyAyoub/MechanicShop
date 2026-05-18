@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="../src/MechanicShop.Api/MechanicShop.Api.csproj" />
+  <Project Path="../src/MechanicShop.Application/MechanicShop.Application.csproj" />
+  <Project Path="../src/MechanicShop.Contracts/MechanicShop.Contracts.csproj" />
+  <Project Path="../src/MechanicShop.Domain/MechanicShop.Domain.csproj" />
+  <Project Path="../src/MechanicShop.Infrastructure/MechanicShop.Infrastructure.csproj" />
+  <Project Path="MechanicShop.Api.IntegrationTests/MechanicShop.Api.IntegrationTests.csproj" />
+  <Project Path="MechanicShop.Application.SubcutaneousTests/MechanicShop.Application.SubcutaneousTests.csproj" />
+  <Project Path="MechanicShop.Application.UnitTests/MechanicShop.Application.UnitTests.csproj" />
+  <Project Path="MechanicShop.Domain.UnitTests/MechanicShop.Domain.UnitTests.csproj" />
+  <Project Path="MechanicShop.Tests.Common/MechanicShop.Tests.Common.csproj" />
+</Solution>
