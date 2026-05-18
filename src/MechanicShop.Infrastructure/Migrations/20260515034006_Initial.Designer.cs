@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MechanicShop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260512040828_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260515034006_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -235,9 +235,8 @@ namespace MechanicShop.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("EstimatedDurationInMins")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EstimatedDurationInMins")
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("LaborCost")
                         .HasPrecision(7, 2)

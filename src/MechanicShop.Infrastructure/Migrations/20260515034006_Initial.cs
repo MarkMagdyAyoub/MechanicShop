@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MechanicShop.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -112,7 +112,7 @@ namespace MechanicShop.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "CITEXT", maxLength: 100, nullable: false),
                     LaborCost = table.Column<decimal>(type: "numeric(7,2)", precision: 7, scale: 2, nullable: false),
-                    EstimatedDurationInMins = table.Column<string>(type: "text", nullable: false),
+                    EstimatedDurationInMins = table.Column<int>(type: "integer", nullable: false),
                     CreatedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModifiedUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),

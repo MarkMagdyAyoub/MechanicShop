@@ -16,6 +16,7 @@
     "sdfrom",
     "sdto",
     "Serilog",
+    "slnx",
     "supabase",
     "Swashbuckle",
     "Validatable",

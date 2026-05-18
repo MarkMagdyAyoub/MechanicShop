@@ -1,19 +1,17 @@
 services:
 
   mechanicShop: 
+    image: mechanicshop-api
     container_name: mechanicShop-api
     build: 
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
       target: final
     ports:
       - "5196:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__DefaultConnection=Host=ep-lingering-pond-ada75ybb-pooler.c-2.us-east-1.aws.neon.tech;Port=5432;Database=neondb;Username=neondb_owner;Password=npg_Q3OtHc1IWVji;SSL Mode=Require;Trust Server Certificate=true
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://seq:5341/ingest/otlp/v1/traces
-      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - "7007:443"
+    env_file:
+      - .env
     depends_on:
       - seq
     networks:

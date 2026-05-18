@@ -30,7 +30,7 @@ public sealed class Customer : AuditableEntity
     if(string.IsNullOrWhiteSpace(name))
       return CustomerErrors.NameRequired;
 
-    if(string.IsNullOrWhiteSpace(phoneNumber) || !Regex.IsMatch(phoneNumber , @"^\+?\d\d{7,15}$"))
+    if(string.IsNullOrWhiteSpace(phoneNumber) || !Regex.IsMatch(phoneNumber , @"^(\+20|0)?1[0125][0-9]{8}$"))
       return CustomerErrors.InvalidPhoneNumber;
     
     if(string.IsNullOrWhiteSpace(email))
@@ -56,7 +56,7 @@ public sealed class Customer : AuditableEntity
     if (string.IsNullOrWhiteSpace(email))
         return CustomerErrors.EmailRequired;
 
-    if (string.IsNullOrWhiteSpace(phoneNumber) || !Regex.IsMatch(phoneNumber, @"^\+?\d{7,15}$"))
+    if (string.IsNullOrWhiteSpace(phoneNumber) || !Regex.IsMatch(phoneNumber , @"^(\+20|0)?1[0125][0-9]{8}$"))
         return CustomerErrors.InvalidPhoneNumber;
 
     try

@@ -30,7 +30,7 @@ public sealed class RepairTaskConfiguration
                 .IsRequired();
 
         builder.Property(r => r.EstimatedDurationInMins)
-                .HasConversion<string>() 
+                .HasConversion<int>() 
                 .IsRequired();
 
         builder.HasMany(rt => rt.Parts)

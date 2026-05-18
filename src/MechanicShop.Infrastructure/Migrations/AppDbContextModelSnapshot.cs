@@ -232,9 +232,8 @@ namespace MechanicShop.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("EstimatedDurationInMins")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EstimatedDurationInMins")
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("LaborCost")
                         .HasPrecision(7, 2)
