@@ -1,100 +1,95 @@
-<h1>
-  <img src="./Docs/Assets/output.png" alt="Logo" width="100" height="100" style="vertical-align: middle;">
-  MechanicShop Management System
-  <img src="./Docs/Assets/output.png" alt="Logo" width="100" height="100" style="vertical-align: middle;">
-</h1>
+# MechanicShop Management System
 
-A comprehensive, full-stack web application designed to streamline the daily operations of a modern mechanic shop. This system provides tools for managing work orders, customers, billing, and scheduling, all through a clean and intuitive user interface.
+MechanicShop is a full-stack web application for running the day-to-day work of a mechanic shop. It covers work orders, customers, vehicles, scheduling, billing, and shop dashboards through an ASP.NET Core API and an Angular single-page app.
 
-## 🏛️ Architectural Overview
+The project is structured around Clean Architecture, with some Domain-Driven Design and CQRS ideas where they fit. The goal is to keep the domain model separate from infrastructure details, make application behavior easier to test, and keep the API and client from owning business rules.
 
-This project is built using **Clean Architecture** principles to create a decoupled, maintainable, and testable system. It also incorporates concepts from **Domain-Driven Design (DDD)** and **Command Query Responsibility Segregation (CQRS)**.
+## Architecture
 
-The solution is divided into several distinct projects:
+The solution is split into a few focused projects:
 
-*   **`MechanicShop.Domain`**: The heart of the application. Contains core business models (Entities), Value Objects, and Domain Events. It has zero dependencies on other layers.
-*   **`MechanicShop.Application`**: Orchestrates business logic using the MediatR library for CQRS. Defines features (use cases) through Commands and Queries.
-*   **`MechanicShop.Infrastructure`**: Implements technical details like database access (EF Core + PostgreSQL), authentication (Identity), caching (HybridCache), and third-party integrations (Twilio, MailKit).
-*   **`MechanicShop.Api`**: The presentation layer. An ASP.NET Core Web API exposing functionality via versioned RESTful endpoints.
-*   **`MechanicShop.Client`**: A modern Single-Page Application (SPA) built with Angular 21.
-*   **`MechanicShop.Contracts`**: Shared library containing DTOs for API/Client communication.
+- `MechanicShop.Domain` contains the core business models, value objects, and domain events. It has no dependencies on the other layers.
+- `MechanicShop.Application` contains the application use cases. Commands and queries are handled through MediatR, with validation and other application behaviors around them.
+- `MechanicShop.Infrastructure` contains the technical implementations: Entity Framework Core with PostgreSQL, Identity authentication, HybridCache, Redis support, Twilio, MailKit, real-time notifications, background work, and other integrations.
+- `MechanicShop.Api` is the ASP.NET Core Web API. It exposes the application through versioned REST endpoints.
+- `MechanicShop.Client` is the Angular 21 single-page application.
+- `MechanicShop.Contracts` contains the DTOs shared between the API and client.
 
-## ✨ Key Features
+## What It Does
 
-*   **Work Order Management**: Full lifecycle tracking from creation to completion, with real-time updates via SignalR.
-*   **Customer & Vehicle Registry**: Detailed database for managing customer information and vehicle history.
-*   **Intelligent Scheduling**: Calendar-based appointment management and technician assignment.
-*   **Automated Billing**: Generate professional PDF invoices using QuestPDF based on labor and parts.
-*   **Dashboard & Analytics**: Real-time overview of shop performance and key metrics.
-*   **Identity & Security**: Secure authentication with JWT, role-based access control (RBAC), and rate limiting.
-*   **Background Processing**: Automated tasks for monitoring overdue work orders and sending notifications.
+The main workflow starts with work orders. A work order can move through its lifecycle from creation to completion, with real-time updates sent through SignalR. Customers and vehicles are tracked separately so vehicle history stays tied to the right customer record.
 
-## 💻 Technology Stack
+Scheduling is calendar-based and supports appointment management and technician assignment. Billing can generate PDF invoices with QuestPDF from labor and parts. The dashboard gives a live view of shop activity and key metrics.
 
-### Backend
-- **Framework**: .NET 10 (ASP.NET Core)
-- **Database**: PostgreSQL with Entity Framework Core
-- **Caching**: HybridCache (.NET 9+) & Redis
-- **Messaging**: MediatR (In-process)
-- **Real-Time**: SignalR
-- **Validation**: FluentValidation
-- **Logging**: Serilog with Seq sink
+Authentication uses JWT, role-based access control, and rate limiting. Background processing handles automated tasks such as monitoring overdue work orders and sending notifications.
 
-### Frontend
-- **Framework**: Angular 21
-- **Language**: TypeScript
-- **State Management**: Reactive patterns with RxJS
+## Technology Stack
 
-### Observability & DevOps
-- **Monitoring**: OpenTelemetry (Metrics & Traces)
-- **Metrics**: Prometheus & Grafana
-- **Log Management**: Seq
-- **Containerization**: Docker & Docker Compose
+Backend:
 
-## 🚀 Getting Started
+- .NET 10 and ASP.NET Core
+- PostgreSQL with Entity Framework Core
+- HybridCache and Redis
+- MediatR for in-process messaging and CQRS
+- SignalR for real-time updates
+- FluentValidation
+- Serilog with a Seq sink
 
-### Prerequisites
-- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- [Node.js & npm](https://nodejs.org/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+Frontend:
 
-### Option 1: Quick Start with Docker
-The easiest way to get the entire stack (API, DB, Monitoring) running is using Docker Compose:
+- Angular 21
+- TypeScript
+- RxJS reactive patterns
+
+Observability and DevOps:
+
+- OpenTelemetry for metrics and traces
+- Prometheus and Grafana for metrics
+- Seq for log management
+- Docker and Docker Compose
+
+## Getting Started
+
+You will need the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0), [Node.js and npm](https://nodejs.org/), and [Docker Desktop](https://www.docker.com/products/docker-desktop).
+
+The quickest way to start the stack is Docker Compose:
 
 ```bash
 docker-compose up -d
 ```
 
-Access the services:
-- **API**: [http://localhost:5196](http://localhost:5196)
-- **Swagger/OpenAPI**: [http://localhost:5196/openapi/v1.json](http://localhost:5196/openapi/v1.json)
-- **Seq (Logs)**: [http://localhost:8081](http://localhost:8081)
-- **Prometheus**: [http://localhost:9090](http://localhost:9090)
-- **Grafana**: [http://localhost:3000](http://localhost:3000) (Admin: `admin` / `admin`)
+That starts the API, database, and monitoring services. Once the containers are running, these endpoints are available:
 
-### Option 2: Local Development
+- API: [http://localhost:5196](http://localhost:5196)
+- OpenAPI JSON: [http://localhost:5196/openapi/v1.json](http://localhost:5196/openapi/v1.json)
+- SwaggerUI: [http://localhost:5196/swagger/index.html](http://localhost:5196/swagger/index.html)
+- Seq logs: [http://localhost:8081](http://localhost:8081)
+- Prometheus: [http://localhost:9090](http://localhost:9090)
+- Grafana: [http://localhost:3000](http://localhost:3000), using `admin` / `admin`
 
-1.  **Backend**:
-    ```bash
-    cd src/MechanicShop.Api
-    dotnet run
-    ```
-    *Note: Ensure you have a PostgreSQL instance running and update `appsettings.Development.json`.*
+For local backend development, run the API project directly:
 
-2.  **Frontend**:
-    ```bash
-    cd src/MechanicShop.Client
-    npm install
-    npm start
-    ```
-    Access the app at [http://localhost:4200](http://localhost:4200).
+```bash
+cd src/MechanicShop.Api
+dotnet run
+```
 
-## 📊 Observability
+Make sure PostgreSQL is running and update `appsettings.Development.json` for your local database settings.
 
-This project implements the **Three Pillars of Observability**:
-1.  **Logs**: Structured logging via Serilog, centralized in Seq.
-2.  **Metrics**: System and business metrics collected by Prometheus and visualized in Grafana.
-3.  **Traces**: Distributed tracing via OpenTelemetry to visualize request flows and identify bottlenecks.
+For local frontend development, install the client dependencies and start Angular:
 
-## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+```bash
+cd src/MechanicShop.Client
+npm install
+npm start
+```
+
+The client runs at [http://localhost:4200](http://localhost:4200).
+
+## Observability
+
+The project includes the three usual pieces of observability:
+
+- Logs are written as structured Serilog events and centralized in Seq.
+- Metrics are collected by Prometheus and visualized in Grafana.
+- Traces are emitted through OpenTelemetry so request flow and bottlenecks can be inspected.
