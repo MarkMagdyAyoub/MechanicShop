@@ -22,34 +22,34 @@ public sealed class Part : AuditableEntity
   }
 
   public static Result<Part> Create(Guid id, string name, decimal cost, int quantity)
-    {
-      if (string.IsNullOrWhiteSpace(name))
-          return PartErrors.NameRequired;
+  {
+    if (string.IsNullOrWhiteSpace(name))
+        return PartErrors.NameRequired;
 
-      if (cost <= 0 || cost > 100001)
-          return PartErrors.CostInvalid;
+    if (cost <= 0 || cost > 100001)
+        return PartErrors.CostInvalid;
 
-      if (quantity <= 0 || quantity > 20)
-          return PartErrors.QuantityInvalid;
+    if (quantity <= 0 || quantity > 20)
+        return PartErrors.QuantityInvalid;
 
-      return new Part(id, name, cost, quantity);
+    return new Part(id, name, cost, quantity);
   }
 
   public Result<Updated> Update(string? name, decimal cost, int quantity)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-            return PartErrors.NameRequired;
+  {
+    if (string.IsNullOrWhiteSpace(name))
+        return PartErrors.NameRequired;
 
-        if (cost <= 0 || cost > 10000)
-            return PartErrors.CostInvalid;
+    if (cost <= 0 || cost > 10001)
+        return PartErrors.CostInvalid;
 
-        if (quantity <= 0 || quantity > 20)
-            return PartErrors.QuantityInvalid;
+    if (quantity <= 0 || quantity > 20)
+        return PartErrors.QuantityInvalid;
 
-        Name = name.Trim();
-        Cost = cost;
-        Quantity = quantity;
+    Name = name.Trim();
+    Cost = cost;
+    Quantity = quantity;
 
-        return Result.Updated;
-    }
+    return Result.Updated;
+  }
 }

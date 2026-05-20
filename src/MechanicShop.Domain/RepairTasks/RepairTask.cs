@@ -30,34 +30,34 @@ public sealed class RepairTask : AuditableEntity
 
     public static Result<RepairTask> Create(Guid id, string name, decimal laborCost, RepairDurationInMinutes estimatedDurationInMins, List<Part> parts)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            return RepairTaskErrors.NameRequired;
+      if (string.IsNullOrWhiteSpace(name))
+          return RepairTaskErrors.NameRequired;
 
-        if (laborCost <= 0)
-            return RepairTaskErrors.LaborCostInvalid;
+      if (laborCost <= 0)
+          return RepairTaskErrors.LaborCostInvalid;
 
-        if (!Enum.IsDefined(estimatedDurationInMins))
-            return RepairTaskErrors.DurationInvalid;
+      if (!Enum.IsDefined(estimatedDurationInMins))
+          return RepairTaskErrors.DurationInvalid;
 
-        return new RepairTask(id, name.Trim(), laborCost, estimatedDurationInMins, parts);
+      return new RepairTask(id, name.Trim(), laborCost, estimatedDurationInMins, parts);
     }
 
     public Result<Updated> Update(string name, decimal laborCost, RepairDurationInMinutes estimatedDurationInMins)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            return RepairTaskErrors.NameRequired;
+      if (string.IsNullOrWhiteSpace(name))
+          return RepairTaskErrors.NameRequired;
 
-        if (laborCost <= 0 || laborCost > 10000)
-            return RepairTaskErrors.LaborCostInvalid;
+      if (laborCost <= 0 || laborCost > 10000)
+          return RepairTaskErrors.LaborCostInvalid;
 
-        if (!Enum.IsDefined(estimatedDurationInMins))
-            return RepairTaskErrors.DurationInvalid;
+      if (!Enum.IsDefined(estimatedDurationInMins))
+          return RepairTaskErrors.DurationInvalid;
 
-        Name = name.Trim();
-        LaborCost = laborCost;
-        EstimatedDurationInMins = estimatedDurationInMins;
+      Name = name.Trim();
+      LaborCost = laborCost;
+      EstimatedDurationInMins = estimatedDurationInMins;
 
-        return Result.Updated;
+      return Result.Updated;
     }
 
     public Result<Updated> UpsertParts(List<Part> incomingParts)
