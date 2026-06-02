@@ -1,5 +1,6 @@
 namespace MechanicShop.Tests.Common.VehicleGenerator;
 
+using MechanicShop.Application.Features.Customers.Commands.CreateCustomer;
 using MechanicShop.Domain.Common.Results;
 using MechanicShop.Domain.Customers.Vehicles;
 public static class VehicleFactory
@@ -18,6 +19,16 @@ public static class VehicleFactory
       model ?? "Corolla",
       year ?? 2022,
       licensePlate ?? "Cairo 1234 ABC"
+    );
+  }
+
+  public static CreateVehicleCommand CreateCommand()
+  {
+    return new CreateVehicleCommand(
+      "Toyota",
+      "Corolla",
+      "Cairo 1234 ABC",
+      2022
     );
   }
 }
