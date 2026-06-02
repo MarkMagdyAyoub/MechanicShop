@@ -16,7 +16,7 @@ public sealed class GetUserInfoByIdQueryHandler(
 
   public async Task<Result<UserDto>> Handle(GetUserInfoByIdQuery request, CancellationToken cancellationToken)
   {
-    var getUserByIdResult = await _identityService.GetUserByIdAsync(request.UserId);
+    var getUserByIdResult = await _identityService.GetUserByIdAsync(request.UserId , cancellationToken);
 
     if (getUserByIdResult.IsError)
     {

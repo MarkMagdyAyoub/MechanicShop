@@ -5,10 +5,10 @@ namespace MechanicShop.Application.Common.Behaviors;
 
 
 public class UnhandledExceptionBehavior<TRequest, TResponse>(
-  ILogger<ILogger> logger
+  ILogger<TRequest> logger
 ) : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull 
 {
-  private readonly ILogger<ILogger> _logger = logger;
+  private readonly ILogger<TRequest> _logger = logger;
 
   public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
   {

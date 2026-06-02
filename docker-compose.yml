@@ -51,6 +51,21 @@ services:
       - "5341:5341"
       - "8081:80"
 
+  redis:
+    image: redis:8.8-alpine
+    container_name: mechanicShop-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - mechanicShop-net
+
 networks:
   mechanicShop-net:
     driver: bridge
+
+volumes:
+  redis-data:
+    driver: local

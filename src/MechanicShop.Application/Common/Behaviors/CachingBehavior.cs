@@ -30,8 +30,8 @@ public class CachingBehavior<TRequest, TResponse>(
       options: new HybridCacheEntryOptions
       {
         // On cache miss, use the factory only.
-      // Disables any internal fallback or underlying data resolution mechanisms.
-      Flags = HybridCacheEntryFlags.DisableUnderlyingData
+        // Disables any internal fallback or underlying data resolution mechanisms.
+        Flags = HybridCacheEntryFlags.DisableUnderlyingData
       },
       cancellationToken: cancellationToken
     );
@@ -39,12 +39,11 @@ public class CachingBehavior<TRequest, TResponse>(
     if(result is not null)
       _logger.LogInformation("Cache Hit For `{TRequest}`" , typeof(TRequest));
     else 
-      _logger.LogInformation("CACHE MISS for {Request}", typeof(TRequest).Name);
-
-    // at this point , we know that the cache is miss (result is null)
-    if(result is null)
     {
+      _logger.LogInformation("CACHE MISS for {Request}", typeof(TRequest).Name);
+      
       // execute the handler , and if it success then cache the result
+      // if not success or throws exception then pass it to exception handler
       result = await next(cancellationToken);
 
       if(result is IResult { IsSuccess: true })

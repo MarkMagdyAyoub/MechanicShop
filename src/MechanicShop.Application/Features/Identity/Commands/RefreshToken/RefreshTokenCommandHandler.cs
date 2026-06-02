@@ -40,7 +40,7 @@ public sealed class RefreshTokenCommandHandler(
         return ApplicationErrors.UserIdClaimInvalid;
     }
 
-    var getUserResult = await _identityService.GetUserByIdAsync(userIdGuid);
+    var getUserResult = await _identityService.GetUserByIdAsync(userIdGuid , cancellationToken);
 
     if (getUserResult.IsError)
     {

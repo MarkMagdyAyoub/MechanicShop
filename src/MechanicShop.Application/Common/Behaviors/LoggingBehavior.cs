@@ -22,7 +22,7 @@ public class LoggingBehavior<TRequest>(
 
     if (!userId.Equals(Guid.Empty))
     {
-      username = await _identityService.GetUserNameAsync(userId);
+      username = await _identityService.GetUserNameAsync(userId , cancellationToken);
     }
 
     _logger.LogInformation(

@@ -9,12 +9,13 @@ namespace MechanicShop.Application.Common.Behaviors;
 public class PerformanceBehavior<TRequest, TResponse>(
   ILogger<TRequest> logger,
   IUser user,
+  IExecutionTimer timer,
   IIdentityService identityService
 ) : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
   private readonly ILogger<TRequest> _logger = logger;
-  private readonly Stopwatch _timer = new Stopwatch();
   private readonly IUser _user = user;
+  private readonly IExecutionTimer _timer = timer;
   private readonly IIdentityService _identityService = identityService;
   private const int MAXIMUM_EXPECTED_DURATION_MS  = 500;
 
@@ -35,7 +36,7 @@ public class PerformanceBehavior<TRequest, TResponse>(
       var requestName = typeof(TRequest).Name;
       if (!userId.Equals(Guid.Empty))
       {
-        username = await _identityService.GetUserNameAsync(userId);
+        username = await _identityService.GetUserNameAsync(userId , cancellationToken);
       }
       _logger.LogWarning(
         "Long Running Request: {RequestName} takes `{Duration} Milliseconds` {UserId} {UserName} {@Request}" , 

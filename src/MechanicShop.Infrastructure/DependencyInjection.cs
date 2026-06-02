@@ -111,6 +111,13 @@ public static class DependencyInjectionExtension
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>();
 
+    services.AddStackExchangeRedisCache(
+      options =>
+      {
+        options.Configuration = configuration.GetConnectionString("Redis");
+      }
+    );
+
     services.AddHybridCache(
       options =>
       {
@@ -131,6 +138,8 @@ public static class DependencyInjectionExtension
     services.AddScoped<IPdfGenerator , PdfGenerator>();
 
     services.AddScoped<INotificationService , NotificationService>();
+    
+    services.AddScoped<IExecutionTimer , ExecutionTimer>();
 
     services.AddScoped<IWorkOrderNotifier , WorkOrderNotifierSignalR>();
 
