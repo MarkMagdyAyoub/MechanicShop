@@ -15,18 +15,16 @@ public sealed class UpdateCustomerCommandValidator : AbstractValidator<UpdateCus
       .WithMessage("Name Should Be 50 Character Maximum");
     
     RuleFor(c => c.Email)
-      .NotEmpty()
-      .WithMessage("Email Is Required")
       .EmailAddress()
       .WithMessage("Email Is Not Valid")
       .MaximumLength(100)
-      .WithMessage("Email Should Be 100 Character Maximum");
+      .WithMessage("Email Should Be 100 Character Maximum")
+      .When(c => !string.IsNullOrWhiteSpace(c.Email));
     
     RuleFor(c => c.PhoneNumber)
-      .NotEmpty()
-      .WithMessage("Phone Number Is Required")
       .Matches(@"^(?:\+20|0020|0)?1[0125][0-9]{8}$")
-      .WithMessage("Invalid Phone Number");
+      .WithMessage("Invalid Phone Number")
+      .When(c => !string.IsNullOrWhiteSpace(c.PhoneNumber));
 
     RuleFor(c => c.Vehicles)
       .NotNull()

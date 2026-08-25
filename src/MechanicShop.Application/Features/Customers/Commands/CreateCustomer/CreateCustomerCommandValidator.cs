@@ -1,4 +1,6 @@
 using FluentValidation;
+using MechanicShop.Domain.Common.ValueObjects.EmailAddress;
+using MechanicShop.Domain.Common.ValueObjects.PhoneNumber;
 
 namespace MechanicShop.Application.Features.Customers.Commands.CreateCustomer;
 
@@ -12,19 +14,13 @@ public sealed class CreateCustomerCommandValidator : AbstractValidator<CreateCus
       .MaximumLength(50)
       .WithMessage("Name Should Be 50 Character Maximum");
     
-    RuleFor(x => x.Email)
-      .NotEmpty()
-      .WithMessage("Email Is Required")
-      .EmailAddress()
-      .WithMessage("Email Is Not Valid")
-      .MaximumLength(100)
-      .WithMessage("Email Should Be 100 Character Maximum");
-    
     RuleFor(x => x.PhoneNumber)
-      .NotEmpty()
-      .WithMessage("Phone Number Is Required")
-      .Matches(@"^(?:\+20|0020|0)?1[0125][0-9]{8}$")
-      .WithMessage("Invalid Phone Number");
+      .Must(phone => string.IsNullOrWhiteSpace(phone) || PhoneNumber.IsValid(phone))
+      .WithMessage(PhoneNumberErrors.Invalid.Description);
+
+    RuleFor(x => x.Email)
+      .Must(email => string.IsNullOrWhiteSpace(email) || EmailAddress.IsValid(email))
+      .WithMessage("Email Is Not Valid");
 
     RuleFor(x => x.Vehicles)
       .NotNull()

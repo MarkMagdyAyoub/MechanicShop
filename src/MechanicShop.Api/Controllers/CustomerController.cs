@@ -1,3 +1,9 @@
+// <copyright file="CustomerController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace MechanicShop.Api.Controllers;
+
 using MechanicShop.Application.Features.Customers.Commands.CreateCustomer;
 using MechanicShop.Application.Features.Customers.Commands.RemoveCustomer;
 using MechanicShop.Application.Features.Customers.Commands.UpdateCustomer;
@@ -11,16 +17,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 
-namespace MechanicShop.Api.Controllers;
-
 [Authorize]
 [Route("api/customers")]
 [ApiVersion("1.0")]
 public sealed class CustomerController(ISender sender) : ApiController
-{ 
+{
   [HttpGet]
-  [ProducesResponseType(typeof(List<CustomerDto>) , StatusCodes.Status200OK)]
-  [ProducesResponseType(typeof(ProblemDetails) , StatusCodes.Status500InternalServerError)]
+  [ProducesResponseType(typeof(List<CustomerDto>), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
   [EndpointName("GetAllCustomers")]
   [EndpointSummary("Get All Customers Available In The System.")]
   [EndpointDescription("Returns All Customers Associated With The Current User.")]
@@ -28,39 +32,37 @@ public sealed class CustomerController(ISender sender) : ApiController
   [OutputCache(Duration = 60)]
   public async Task<IActionResult> GetAll(CancellationToken ct)
   {
-    var result = await sender.Send(new GetCustomersQuery() , ct);
+    var result = await sender.Send(new GetCustomersQuery(), ct);
 
     return result.Match(
-      Ok,
-      ProblemDetailsHandler
-    );
+      this.Ok,
+      this.ProblemDetailsHandler);
   }
 
-  [HttpGet("{customerId:guid}" , Name = "GetCustomerById")]
-  [ProducesResponseType(typeof(List<CustomerDto>) , StatusCodes.Status200OK)]
-  [ProducesResponseType(typeof(List<CustomerDto>) , StatusCodes.Status404NotFound)]
-  [ProducesResponseType(typeof(ProblemDetails) , StatusCodes.Status500InternalServerError)]
+  [HttpGet("{customerId:guid}", Name = "GetCustomerById")]
+  [ProducesResponseType(typeof(List<CustomerDto>), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(List<CustomerDto>), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
   [EndpointName("GetCustomerById")]
   [EndpointSummary("Get A Customer Using Requested Id.")]
   [EndpointDescription("Returns Detailed Information About The Specified Customer If Found.")]
   [Tags("customers")]
   [OutputCache(Duration = 60)]
-  public async Task<IActionResult> GetById(Guid customerId , CancellationToken ct)
+  public async Task<IActionResult> GetById(Guid customerId, CancellationToken ct)
   {
-    var result = await sender.Send(new GetCustomerByIdQuery(customerId) , ct);
+    var result = await sender.Send(new GetCustomerByIdQuery(customerId), ct);
 
     return result.Match(
-      Ok,
-      ProblemDetailsHandler
-    );
+      this.Ok,
+      this.ProblemDetailsHandler);
   }
-  
+
   [HttpPost]
   [Authorize(Policy = "ManagerOnly")]
-  [ProducesResponseType(typeof(CustomerDto) , StatusCodes.Status201Created)]
-  [ProducesResponseType(typeof(ValidationProblemDetails) , StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(typeof(ProblemDetails) , StatusCodes.Status409Conflict)]
-  [ProducesResponseType(typeof(ProblemDetails) , StatusCodes.Status500InternalServerError)]
+  [ProducesResponseType(typeof(CustomerDto), StatusCodes.Status201Created)]
+  [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
   [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
   [EndpointName("CreateCustomer")]
@@ -68,84 +70,73 @@ public sealed class CustomerController(ISender sender) : ApiController
   [EndpointDescription("Adds A New Customer To The System.")]
   [ProducesDefaultResponseType(typeof(ProblemDetails))]
   [Tags("customers")]
-  public async Task<IActionResult> Create([FromBody] CreateCustomerRequest request , CancellationToken ct)
+  public async Task<IActionResult> Create([FromBody] CreateCustomerRequest request, CancellationToken ct)
   {
     var vehicles = request.Vehicles
       .ConvertAll(
-        vehicle => 
+        vehicle =>
           new CreateVehicleCommand(
-            vehicle.Make , 
-            vehicle.Model , 
-            vehicle.LicensePlate , 
-            vehicle.Year
-          )
-        );
-    
+            vehicle.Make,
+            vehicle.Model,
+            vehicle.LicensePlate,
+            vehicle.Year));
+
     var result = await sender.Send(
       new CreateCustomerCommand(
         request.Name,
         request.PhoneNumber,
         request.Email,
-        vehicles
-      ),
-      ct
-    );
+        vehicles),
+      ct);
 
     return result.Match(
-        response => CreatedAtRoute(
+        response => this.CreatedAtRoute(
           routeName: "GetCustomerById",
           routeValues: new
           {
-              version = HttpContext.GetRequestedApiVersion()?.ToString(),
-              customerId = response.CustomerId
+            version = this.HttpContext.GetRequestedApiVersion()?.ToString(),
+            customerId = response.CustomerId,
           },
-          value: response
-        ),
-        ProblemDetailsHandler
-      );
+          value: response),
+        this.ProblemDetailsHandler);
   }
 
   [HttpPut("{customerId:guid}")]
   [Authorize(Roles = nameof(Role.Manager))]
   [ProducesResponseType(typeof(CustomerDto), StatusCodes.Status200OK)]
-  [ProducesResponseType(typeof(ValidationProblemDetails) , StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(typeof(ProblemDetails) , StatusCodes.Status409Conflict)]
-  [ProducesResponseType(typeof(ProblemDetails) , StatusCodes.Status500InternalServerError)]
+  [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
   [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
   [EndpointSummary("Updates An Existing customer.")]
   [EndpointDescription("Updates A Customer And Its Associated Vehicle.")]
   [EndpointName("UpdateCustomer")]
   [Tags("customers")]
-  public async Task<IActionResult> Update(Guid customerId , [FromBody] UpdateCustomerRequest request , CancellationToken ct)
+  public async Task<IActionResult> Update(Guid customerId, [FromBody] UpdateCustomerRequest request, CancellationToken ct)
   {
-    var vehicles  = request.Vehicles
+    var vehicles = request.Vehicles
       .ConvertAll(
-        vehicle => 
+        vehicle =>
           new UpdateVehicleCommand(
-            vehicle.VehicLeId , 
-            vehicle.Make , 
-            vehicle.Model , 
-            vehicle.LicensePlate , 
-            vehicle.Year
-          )
-      );
-    
+            vehicle.VehicLeId,
+            vehicle.Make,
+            vehicle.Model,
+            vehicle.LicensePlate,
+            vehicle.Year));
+
     var result = await sender.Send(
       new UpdateCustomerCommand(
         customerId,
         request.Name,
         request.PhoneNumber,
         request.Email,
-        vehicles
-      ),
-      ct
-    );
+        vehicles),
+      ct);
 
     return result.Match(
-      response => Ok(response),
-      ProblemDetailsHandler
-    );
+      response => this.Ok(response),
+      this.ProblemDetailsHandler);
   }
 
   [HttpDelete]
@@ -158,13 +149,12 @@ public sealed class CustomerController(ISender sender) : ApiController
   [EndpointName("RemoveCustomer")]
   [Tags("customers")]
 
-  public async Task<IActionResult> Delete(Guid customerId , CancellationToken ct)
+  public async Task<IActionResult> Delete(Guid customerId, CancellationToken ct)
   {
-    var result = await sender.Send(new RemoveCustomerCommand(customerId) , ct);
+    var result = await sender.Send(new RemoveCustomerCommand(customerId), ct);
 
     return result.Match(
-      _ => NoContent(),
-      ProblemDetailsHandler
-    );
+      _ => this.NoContent(),
+      this.ProblemDetailsHandler);
   }
 }

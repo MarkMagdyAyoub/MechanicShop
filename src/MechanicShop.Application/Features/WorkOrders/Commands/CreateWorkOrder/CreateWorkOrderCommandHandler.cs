@@ -27,7 +27,7 @@ public sealed class CreateWorkOrderCommandHandler(
 
   public async Task<Result<WorkOrderDto>> Handle(CreateWorkOrderCommand request, CancellationToken cancellationToken)
   {
-    var repairTasks = await _context.RepairTasks.AsNoTracking()
+    var repairTasks = await _context.RepairTasks
                             .Where(rt => request.RepairTaskIds.Contains(rt.Id))
                             .ToListAsync(cancellationToken); 
 

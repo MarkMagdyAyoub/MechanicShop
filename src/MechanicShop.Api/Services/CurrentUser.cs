@@ -1,19 +1,24 @@
-using System.Security.Claims;
-using MechanicShop.Application.Common.Interfaces;
+// <copyright file="CurrentUser.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace MechanicShop.Api.Services;
 
+using System.Security.Claims;
+using MechanicShop.Application.Common.Interfaces;
+
 public sealed class CurrentUser(IHttpContextAccessor httpContextAccessor) : IUser
 {
-  private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+  private readonly IHttpContextAccessor httpContextAccessor = httpContextAccessor;
 
+  /// <inheritdoc/>
   public Guid? Id
   {
     get
     {
-      var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var userId = this.httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-      if(Guid.TryParse(userId , out var parsedValue))
+      if (Guid.TryParse(userId, out var parsedValue))
       {
         return parsedValue;
       }

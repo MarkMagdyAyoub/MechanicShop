@@ -14,9 +14,9 @@ public static class CustomerMapper
     return new CustomerDto
     {
       CustomerId = customer.Id,
-      Email = customer.Email!,
+      Email = customer.Email?.Value,
       Name = customer.Name!,
-      PhoneNumber = customer.PhoneNumber!,
+      PhoneNumber = customer.PhoneNumber?.Value,
       Vehicles = customer.Vehicles.Select(x => x.ToDto()).ToList() ?? []
     };
   }

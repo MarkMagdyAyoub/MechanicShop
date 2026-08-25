@@ -1,7 +1,7 @@
-using System.Net.Mail;
-using System.Text.RegularExpressions;
 using MechanicShop.Domain.Common;
 using MechanicShop.Domain.Common.Results;
+using MechanicShop.Domain.Common.ValueObjects.EmailAddress;
+using MechanicShop.Domain.Common.ValueObjects.PhoneNumber;
 using MechanicShop.Domain.Customers.Vehicles;
 
 namespace MechanicShop.Domain.Customers;
@@ -9,14 +9,16 @@ namespace MechanicShop.Domain.Customers;
 public sealed class Customer : AuditableEntity
 {
   public string? Name { get; private set; }
-  public string? PhoneNumber { get; private set; }
-  public string? Email { get; private set; }
+  public PhoneNumber? PhoneNumber { get; private set; }
+  public EmailAddress? Email { get; private set; }
   private readonly List<Vehicle> _vehicles = [];
   public IEnumerable<Vehicle> Vehicles => _vehicles.AsReadOnly();
 
+#pragma warning disable CS8618
   private Customer(){}
+#pragma warning restore CS8618
 
-  private Customer(Guid id , string name , string phoneNumber , string email , List<Vehicle> vehicles)
+  private Customer(Guid id , string name , PhoneNumber? phoneNumber , EmailAddress? email , List<Vehicle> vehicles)
     : base(id)
   {
     Name = name;
@@ -25,52 +27,68 @@ public sealed class Customer : AuditableEntity
     _vehicles = vehicles;
   }
 
-  public static Result<Customer> Create(Guid id , string name , string phoneNumber , string email , List<Vehicle> vehicles)
+  public static Result<Customer> Create(Guid id , string name , string? phoneNumber , string? email , List<Vehicle> vehicles)
   {
     if(string.IsNullOrWhiteSpace(name))
       return CustomerErrors.NameRequired;
 
-    if(string.IsNullOrWhiteSpace(phoneNumber) || !Regex.IsMatch(phoneNumber , @"^(\+20|0)?1[0125][0-9]{8}$"))
-      return CustomerErrors.InvalidPhoneNumber;
-    
-    if(string.IsNullOrWhiteSpace(email))
-      return CustomerErrors.EmailRequired;
+    EmailAddress? emailAddress = null;
+    PhoneNumber? phone = null;
 
-    try
+    if(!string.IsNullOrWhiteSpace(email))
     {
-      _ = new MailAddress(email);
+      var emailResult = EmailAddress.Create(email);
+
+      if(emailResult.IsError)
+        return emailResult.Errors;
+
+      emailAddress = emailResult.Value;
     }
-    catch
+
+    if(!string.IsNullOrWhiteSpace(phoneNumber))
     {
-      return CustomerErrors.EmailInvalid;
+      var phoneResult = PhoneNumber.Create(phoneNumber);
+
+      if(phoneResult.IsError)
+        return phoneResult.Errors;
+
+      phone = phoneResult.Value;
     }
     
-    return new Customer(id , name,  phoneNumber , email , vehicles);
+    return new Customer(id , name,  phone , emailAddress , vehicles);
   }
 
-  public Result<Updated> Update(string name, string email, string phoneNumber)
+  public Result<Updated> Update(string name, string? email, string? phoneNumber)
   {
     if (string.IsNullOrWhiteSpace(name))
         return CustomerErrors.NameRequired;
 
-    if (string.IsNullOrWhiteSpace(email))
-        return CustomerErrors.EmailRequired;
+    EmailAddress? emailAddress = null;
+    PhoneNumber? phone = null;
 
-    if (string.IsNullOrWhiteSpace(phoneNumber) || !Regex.IsMatch(phoneNumber , @"^(\+20|0)?1[0125][0-9]{8}$"))
-        return CustomerErrors.InvalidPhoneNumber;
-
-    try
+    if(!string.IsNullOrWhiteSpace(email))
     {
-      _ = new MailAddress(email);
+      var emailResult = EmailAddress.Create(email);
+
+      if(emailResult.IsError)
+        return emailResult.Errors;
+
+      emailAddress = emailResult.Value;
     }
-    catch
+
+    if(!string.IsNullOrWhiteSpace(phoneNumber))
     {
-      return CustomerErrors.EmailInvalid;
+      var phoneResult = PhoneNumber.Create(phoneNumber);
+
+      if(phoneResult.IsError)
+        return phoneResult.Errors;
+
+      phone = phoneResult.Value;
     }
 
     Name = name;
-    Email = email;
-    PhoneNumber = phoneNumber;
+    Email = emailAddress;
+    PhoneNumber = phone;
 
     return Result.Updated;
   }

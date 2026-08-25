@@ -68,10 +68,18 @@ public sealed class GetDailyScheduleQueryHandler(
     var now = TimeZoneInfo.ConvertTime(_timeProvider.GetUtcNow(), request.TimeZone);
     _logger.LogInformation("Current Local Time: {Now}", now);
 
+    // Keep a raw UTC reference for comparisons against UTC values (startUtc/endUtc,
+    // and the day-boundary utcEnd). Comparing DateTime (Unspecified kind) directly
+    // against DateTimeOffset relies on an implicit conversion that stamps the
+    // DateTime with the machine's LOCAL time zone, not request.TimeZone — which
+    // silently produces wrong results whenever the two zones differ. Comparing
+    // UTC-to-UTC avoids that ambiguity entirely.
+    var utcNow = _timeProvider.GetUtcNow();
+
     var result = new ScheduleDto
     {
       OnDate = request.ScheduleDate,
-      IsPastDate =  localEnd < now, 
+      IsPastDate =  utcEnd < utcNow, 
       Spots = []
     };
 
@@ -123,7 +131,7 @@ public sealed class GetDailyScheduleQueryHandler(
             StartAt = startUtc,
             EndAt = endUtc,
             WorkOrderLocked = false,
-            IsAvailable = current >= now
+            IsAvailable = startUtc >= utcNow
           });
         }
 

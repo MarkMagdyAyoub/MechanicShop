@@ -30,23 +30,31 @@ public sealed class SendWorkOrderCompletedEmailEventHandler(
       return;
     }
 
-    await _notificationService.SendEmailAsync(
-      new UserEmailInfo
-      {
-        UserName = workOrder.Vehicle?.Customer?.Name!,
-        Email = workOrder.Vehicle?.Customer?.Email!,
-      }, 
-      cancellationToken
-    );
+    var customer = workOrder.Vehicle?.Customer;
 
-    await _notificationService.SendSmsAsync(
-      new UserSmsInfo
-      {
-        UserName = workOrder.Vehicle?.Customer?.Name!,
-        PhoneNumber = workOrder.Vehicle?.Customer?.PhoneNumber!
-      },
-      cancellationToken
-    );
+    if(customer?.Email is not null)
+    {
+      await _notificationService.SendEmailAsync(
+        new UserEmailInfo
+        {
+          UserName = customer.Name!,
+          Email = customer.Email.Value,
+        },
+        cancellationToken
+      );
+    }
+
+    if(customer?.PhoneNumber is not null)
+    {
+      await _notificationService.SendSmsAsync(
+        new UserSmsInfo
+        {
+          UserName = customer.Name!,
+          PhoneNumber = customer.PhoneNumber.Value
+        },
+        cancellationToken
+      );
+    }
     
   }
 }

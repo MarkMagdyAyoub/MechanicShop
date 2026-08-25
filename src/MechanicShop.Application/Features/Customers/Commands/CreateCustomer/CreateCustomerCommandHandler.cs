@@ -2,6 +2,7 @@ using MechanicShop.Application.Common.Interfaces;
 using MechanicShop.Application.Features.Customers.DTOs;
 using MechanicShop.Application.Features.Customers.Mappers;
 using MechanicShop.Domain.Common.Results;
+using MechanicShop.Domain.Common.ValueObjects.EmailAddress;
 using MechanicShop.Domain.Customers;
 using MechanicShop.Domain.Customers.Vehicles;
 using MediatR;
@@ -23,15 +24,23 @@ public sealed class CreateCustomerCommandHandler (
 
   public async Task<Result<CustomerDto>> Handle(CreateCustomerCommand command, CancellationToken ct)
   {
-    var email = command.Email.Trim().ToLower();
-
-    var exists = await _context.Customers.AnyAsync(c => c.Email == email , ct);
-
-    if (exists)
+    if(!string.IsNullOrWhiteSpace(command.Email))
     {
-      _logger.LogWarning("Customer Creation Failed, Email Already Exists");
-      return CustomerErrors.CustomerExists;
-    }  
+      var emailResult = EmailAddress.Create(command.Email);
+
+      if(emailResult.IsError)
+        return emailResult.Errors;
+
+      var email = emailResult.Value;
+
+      var exists = await _context.Customers.AnyAsync(c => c.Email == email , ct);
+
+      if (exists)
+      {
+        _logger.LogWarning("Customer Creation Failed, Email Already Exists");
+        return CustomerErrors.CustomerExists;
+      }
+    }
 
     List<Vehicle> vehicles = [];
 
@@ -42,7 +51,7 @@ public sealed class CreateCustomerCommandHandler (
     var existingPlates = await _context.Vehicles
                               .Where(v => licensePlates.Contains(v.LicensePlate))
                               .Select(v => v.LicensePlate)
-                              .ToListAsync();
+                              .ToListAsync(ct);
 
     if (existingPlates.Any())
     {
@@ -80,7 +89,7 @@ public sealed class CreateCustomerCommandHandler (
 
     _logger.LogInformation($"Customer Created Successfully. Id: {customer.Id}");
 
-    await _cache.RemoveAsync("customer" , ct);
+    await _cache.RemoveByTagAsync("customer" , ct);
 
     return customer.ToDto();
   }

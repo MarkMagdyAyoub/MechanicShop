@@ -7,6 +7,7 @@ using MechanicShop.Domain.RepairTasks.Parts;
 using MechanicShop.Domain.WorkOrders;
 using MechanicShop.Domain.WorkOrders.Billing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 namespace MechanicShop.Application.Common.Interfaces;
 public interface IAppDbContext
 {

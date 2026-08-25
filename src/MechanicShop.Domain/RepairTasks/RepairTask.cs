@@ -17,7 +17,7 @@ public sealed class RepairTask : AuditableEntity
 #pragma warning disable CS8618
     private RepairTask()
     { }
-#pragma warning restore CS8618  
+#pragma warning restore CS8618
 
   private RepairTask(Guid id, string name, decimal laborCost, RepairDurationInMinutes estimatedDurationInMins, List<Part> parts)
         : base(id)
@@ -62,7 +62,7 @@ public sealed class RepairTask : AuditableEntity
 
     public Result<Updated> UpsertParts(List<Part> incomingParts)
     {
-      _parts.RemoveAll(existing => incomingParts.All(p => p.Id != existing.Id)); 
+      _parts.RemoveAll(existing => incomingParts.All(p => p.Id != existing.Id));
 
       foreach(var incoming in incomingParts)
       {
@@ -71,7 +71,7 @@ public sealed class RepairTask : AuditableEntity
           _parts.Add(incoming);
         else
         {
-          var updatePartResult = incoming.Update(incoming.Name , incoming.Cost , incoming.Quantity);
+          var updatePartResult = existing.Update(incoming.Name , incoming.Cost , incoming.Quantity);
           if(updatePartResult.IsError)
             return updatePartResult.Errors;
         }

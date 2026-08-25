@@ -43,34 +43,42 @@ public sealed class TokenProvider(
 
   public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
   {
-    var jwtSettings = _configuration.GetSection("JwtSettings");
+      var jwtSettings = _configuration.GetSection("JwtSettings");
 
-    var tokenValidationParameters = new TokenValidationParameters
-    {
-      ValidateAudience = true,
-      ValidateIssuer = true,
-      ValidateIssuerSigningKey = true,
-      ValidateLifetime = false,
-      ValidIssuer = jwtSettings["Issuer"],
-      ValidAudience = jwtSettings["Audience"],
-      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"]!)),
-      ClockSkew = TimeSpan.Zero
-    };
-    
+      var tokenValidationParameters = new TokenValidationParameters
+      {
+          ValidateAudience = true,
+          ValidateIssuer = true,
+          ValidateIssuerSigningKey = true,
+          ValidateLifetime = false,
+          ValidIssuer = jwtSettings["Issuer"],
+          ValidAudience = jwtSettings["Audience"],
+          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"]!)),
+          ClockSkew = TimeSpan.Zero
+      };
 
-    var tokenHandler = new JwtSecurityTokenHandler();
+      var tokenHandler = new JwtSecurityTokenHandler();
 
-    var principal = tokenHandler.ValidateToken(token , tokenValidationParameters , out SecurityToken securityToken);
+      try
+      {
+          var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
 
-    if(
-        securityToken is not JwtSecurityToken jwtSecurityToken || 
-        !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256 , StringComparison.InvariantCultureIgnoreCase)
-      )
-    {
-      throw new SecurityTokenException("Invalid Token.");
-    }
+          if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+              !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+          {
+              return null;
+          }
 
-    return principal;
+          return principal;
+      }
+      catch (SecurityTokenException)
+      {
+          return null;
+      }
+      catch (ArgumentException)
+      {
+          return null;
+      }
   }
 
   public async Task<Result<TokenDto>> CreateTokenAsync(UserDto user, CancellationToken cancellationToken)

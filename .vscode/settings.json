@@ -1,4 +1,6 @@
 {
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
   "cSpell.words": [
     "ASPNETCORE",
     "Browsable",
@@ -19,8 +21,10 @@
     "slnx",
     "supabase",
     "Swashbuckle",
+    "Upserted",
     "Validatable",
     "wordmark",
-    "workorders"
+    "workorders",
+    "Xunit"
   ]
 }

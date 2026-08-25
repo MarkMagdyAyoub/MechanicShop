@@ -1,5 +1,7 @@
+using MechanicShop.Application.Common.Interfaces;
 using MechanicShop.Domain.Common.Results;
 using MechanicShop.Domain.WorkOrders.Billing;
+using MechanicShop.Tests.Common.WorkOrderGenerator;
 
 namespace MechanicShop.Tests.Common.InvoiceGenerator;
 
@@ -22,5 +24,17 @@ public static class InvoiceFactory
       taxAmount: 10,
       datetime ?? DateTimeOffset.UtcNow
     );
+  }
+
+  private static async Task<Invoice> CreateUnpaidInvoiceAsync(IAppDbContext _context)
+  {
+      var workOrder = await WorkOrderFactory.GetRandomWorkOrderAsync(_context);
+
+      var invoice = Create(workOrderId: workOrder.Id).Value;
+
+      _context.Invoices.Add(invoice);
+      await _context.SaveChangesAsync(CancellationToken.None);
+
+      return invoice;
   }
 }

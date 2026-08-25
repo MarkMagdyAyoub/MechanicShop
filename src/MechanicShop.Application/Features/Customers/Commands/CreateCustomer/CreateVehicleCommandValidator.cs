@@ -16,6 +16,6 @@ public sealed class CreateVehicleCommandValidator : AbstractValidator<CreateVehi
     
     RuleFor(x => x.LicensePlate)
       .NotEmpty()
-      .MaximumLength(10);
+      .MaximumLength(20);
   }
 }

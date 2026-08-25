@@ -25,7 +25,9 @@ public sealed class UpdateWorkOrderRepairTasksCommandHandler(
   public async Task<Result<Updated>> Handle(UpdateWorkOrderRepairTasksCommand request, CancellationToken cancellationToken)
   {
     // check if repair tasks exists
-    var workOrder = await _context.WorkOrders.FindAsync(request.WorkOrderId , cancellationToken);
+    var workOrder = await _context.WorkOrders
+                              .Include(wo => wo.RepairTasks)
+                              .FirstOrDefaultAsync(wo => wo.Id == request.WorkOrderId , cancellationToken);
     if(workOrder is null)
     {
       _logger.LogWarning("Work Order With Id `{workOrderId}` Is Not Found" , request.WorkOrderId);

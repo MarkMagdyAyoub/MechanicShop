@@ -7,7 +7,6 @@ using MechanicShop.Domain.WorkOrders.Billing;
 using MechanicShop.Domain.Common.Results;
 namespace MechanicShop.Domain.WorkOrders;
 
-
 public sealed class WorkOrder : AuditableEntity
 {
   public Guid LaborId { get; private set; }

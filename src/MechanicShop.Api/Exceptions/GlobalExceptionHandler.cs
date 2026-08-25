@@ -1,22 +1,27 @@
+// <copyright file="GlobalExceptionHandler.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace MechanicShop.Api.Exceptions;
+
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-namespace MechanicShop.Api.Exceptions;
 
 public sealed class GlobalExceptionHandler(
   IProblemDetailsService problemDetailsService,
-  ILogger<GlobalExceptionHandler> logger
-) : IExceptionHandler
+  ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
-  private readonly IProblemDetailsService _problemDetailsService = problemDetailsService;
-  private readonly ILogger<GlobalExceptionHandler> _logger = logger;
+  private readonly IProblemDetailsService problemDetailsService = problemDetailsService;
+  private readonly ILogger<GlobalExceptionHandler> logger = logger;
 
+  /// <inheritdoc/>
   public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
   {
-    _logger.LogError(exception , "Unhandled Exception Occurred");
+    this.logger.LogError(exception, "Unhandled Exception Occurred");
 
     httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-    return await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+    return await this.problemDetailsService.TryWriteAsync(new ProblemDetailsContext
     {
       HttpContext = httpContext,
       Exception = exception,
@@ -24,8 +29,8 @@ public sealed class GlobalExceptionHandler(
       {
         Type = exception.GetType().Name,
         Title = "An Error Occurred",
-        Detail = exception.Message
-      }
+        Detail = exception.Message,
+      },
     });
   }
 }

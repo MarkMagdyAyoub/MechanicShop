@@ -12,6 +12,7 @@ namespace MechanicShop.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("CREATE EXTENSION IF NOT EXISTS citext;");
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -104,6 +105,7 @@ namespace MechanicShop.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                 });
+
 
             migrationBuilder.CreateTable(
                 name: "RepairTasks",
@@ -478,6 +480,8 @@ namespace MechanicShop.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("DROP EXTENSION IF EXISTS citext;");
+            
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

@@ -1,12 +1,18 @@
+// <copyright file="BearerSecuritySchemeTransformer.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace MechanicShop.Api.OpenApi.Transformers;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 
-namespace MechanicShop.Api.OpenApi.Transformers;
-
 public sealed class BearerSecuritySchemeTransformer : IOpenApiDocumentTransformer
 {
   private const string SchemeId = JwtBearerDefaults.AuthenticationScheme;
+
+  /// <inheritdoc/>
   public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
   {
     document.Components ??= new OpenApiComponents();
@@ -21,9 +27,9 @@ public sealed class BearerSecuritySchemeTransformer : IOpenApiDocumentTransforme
       Reference = new OpenApiReference
       {
         Type = ReferenceType.SecurityScheme,
-        Id = SchemeId
-      }
-    }; 
+        Id = SchemeId,
+      },
+    };
 
     return Task.CompletedTask;
   }
